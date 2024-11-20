@@ -18,6 +18,7 @@
 
 # but do track...
 !*.R 
+!README.md
 
 # add "simulation" scripts
 !*.Rmd
