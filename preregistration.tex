@@ -1,0 +1,1008 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  man,floatsintext]{apa6}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{english}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+% Manuscript styling
+\usepackage{upgreek}
+\captionsetup{font=singlespacing,justification=justified}
+
+% Table formatting
+\usepackage{longtable}
+\usepackage{lscape}
+% \usepackage[counterclockwise]{rotating}   % Landscape page setup for large tables
+\usepackage{multirow}		% Table styling
+\usepackage{tabularx}		% Control Column width
+\usepackage[flushleft]{threeparttable}	% Allows for three part tables with a specified notes section
+\usepackage{threeparttablex}            % Lets threeparttable work with longtable
+
+% Create new environments so endfloat can handle them
+% \newenvironment{ltable}
+%   {\begin{landscape}\centering\begin{threeparttable}}
+%   {\end{threeparttable}\end{landscape}}
+\newenvironment{lltable}{\begin{landscape}\centering\begin{ThreePartTable}}{\end{ThreePartTable}\end{landscape}}
+
+% Enables adjusting longtable caption width to table width
+% Solution found at http://golatex.de/longtable-mit-caption-so-breit-wie-die-tabelle-t15767.html
+\makeatletter
+\newcommand\LastLTentrywidth{1em}
+\newlength\longtablewidth
+\setlength{\longtablewidth}{1in}
+\newcommand{\getlongtablewidth}{\begingroup \ifcsname LT@\roman{LT@tables}\endcsname \global\longtablewidth=0pt \renewcommand{\LT@entry}[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}\@nameuse{LT@\roman{LT@tables}} \fi \endgroup}
+
+% \setlength{\parindent}{0.5in}
+% \setlength{\parskip}{0pt plus 0pt minus 0pt}
+
+% Overwrite redefinition of paragraph and subparagraph by the default LaTeX template
+% See https://github.com/crsh/papaja/issues/292
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries\itshape\typesectitle}}
+
+\renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+  {-\z@\relax}%
+  {\normalfont\normalsize\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+\makeatother
+
+\makeatletter
+\usepackage{etoolbox}
+\patchcmd{\maketitle}
+  {\section{\normalfont\normalsize\abstractname}}
+  {\section*{\normalfont\normalsize\abstractname}}
+  {}{\typeout{Failed to patch abstract.}}
+\patchcmd{\maketitle}
+  {\section{\protect\normalfont{\@title}}}
+  {\section*{\protect\normalfont{\@title}}}
+  {}{\typeout{Failed to patch title.}}
+\makeatother
+
+\usepackage{xpatch}
+\makeatletter
+\xapptocmd\appendix
+  {\xapptocmd\section
+    {\addcontentsline{toc}{section}{\appendixname\ifoneappendix\else~\theappendix\fi: #1}}
+    {}{\InnerPatchFailed}%
+  }
+{}{\PatchFailed}
+\makeatother
+\keywords{Misinformation; fake news; false news; news judgment; news accuracy; news discernment}
+\usepackage{csquotes}
+\usepackage{placeins} 
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={How effective are interventions designed to help people detect misinformation? A Pre-data Collection Registration},
+  pdfauthor={Jan Pfänder1 \& Sacha Altay2},
+  pdflang={en-EN},
+  pdfkeywords={Misinformation; fake news; false news; news judgment; news accuracy; news discernment},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{How effective are interventions designed to help people detect misinformation?\\
+A Pre-data Collection Registration}
+\author{Jan Pfänder\textsuperscript{1} \& Sacha Altay\textsuperscript{2}}
+\date{}
+
+
+\shorttitle{A Meta-Analysis of Misinformation Interventions}
+
+\authornote{
+
+JP received funding from the SCALUP ANR grant ANR-21-CE28-0016-01
+SA received funding from the European Research Council (ERC) under the European Union's Horizon 2020 research and innovation program (grant agreement nr. 883121).
+
+Correspondence concerning this article should be addressed to Sacha Altay, . E-mail: \href{mailto:sacha.altay@gmail.com}{\nolinkurl{sacha.altay@gmail.com}}
+
+}
+
+\affiliation{\vspace{0.5cm}\textsuperscript{1} Institut Jean Nicod, Département d'études cognitives, ENS, EHESS, PSL University, CNRS, France\\\textsuperscript{2} Department of Political Science, University of Zurich, Switzerland}
+
+\abstract{%
+In recent years, many studies have proposed individual-level interventions to reduce people's susceptibility for believing in misinformation. Researchers have typically evaluated the effectiveness of these interventions based on a discernment measure--how much more participants rate true news as accurate than false news. Here, we will re-assess the findings of this literature by analyzing their data using a Signal Detection Theory (SDT) framework. This allows us to differentiate between two different kinds of intervention effects: First, the effect on sensitivity, which is the ability of discriminating between true and false news that researchers typically look for. Second, the effect on response bias, which is the extent to which participants become generally more/less skeptical in their accuracy ratings for all news (whether true or false). We run an Individual Participant Data meta-analysis (IPD) based on a sample of studies that we identified via a systematic literature review following the PRISMA guidelines. We use a two-stage approach: First, we extract individual participant data and run a Signal Detection Theory analysis separately for each experiment. Second, we run a meta-analysis on the experiment-level outcomes.
+}
+
+
+
+\begin{document}
+\maketitle
+
+\section{Introduction}\label{introduction}
+
+In recent years, many studies have tested interventions designed to help people detect online misinformation. In these studies, researchers have typically evaluated the effectiveness of interventions based on a discernment measure--how much more participants rate true news as accurate than false news.
+
+This measure, although widely used, has been criticized recently\textsuperscript{1--3}. For example,\textsuperscript{4} re-analyzed data on gamified interventions--Bad News and Go Viral!--previously shown by researchers to increase people's news discernment. While the original studies used a discernment measure based on mean differences,\textsuperscript{4} used a SDT framework. They show that the interventions have in fact not improved participant's ability to discriminate between true and false news, but have increased general skepticism, i.e.~a tendency to respond `not accurate' to all news items, including the true ones. This suggests that some interventions designed to `inoculate' people against misinformation, might not be as effective as previously thought. They might even be counterproductive in a context where the vast majority of news people encounter are true news.
+
+Here, our aim is to extend this work and systematically re-evaluate misinformation interventions. We focus on all kinds of individual-level interventions designed to reduce people's susceptibility for believing in misinformation. We use Signal Detection Theory (SDT) to differentiate between two different effects of interventions: First, the effect on sensitivity, which is the ability of discriminating between true and false news that researchers typically look for. Second, the effect on response bias, which is the extent to which participants shift their general response criterion, i.e.~the extent to which they become generally more/less skeptical in their accuracy ratings for all news (whether true or false).
+
+We formulate two main research questions: How do interventions against misinformation affect: (i) people's ability to discriminate between true and false news (sensitivity, or ``d''', in a SDT framework; RQ1)?, and (ii) people's skepticism towards news in general (i.e.~response bias, or ``c'', in a SDT framework; RQ2)?
+
+We will also test some moderator effects. At this stage, we know that we will ask the following questions: Do the effects of the interventions (both on sensitivity and response bias) differ between (i) different types of interventions; (ii) politically concordant and politically discordant news; (iii) different age groups? It is likely that after data collection, we will have a better overview of variables and would want to ask more moderator questions. If that is the case, we will specify these moderators in a second pre-registration before analysis.
+
+In order to compare it to our results, we will try to descriptively assess how many studies originally reported positive effects of their intervention on news discernment. At this point, it is hard to predict how comparable the orginial authors' evaluation will be with ours, e.g.~due to different co-variates in the original models. If after data collection we deem it feasible, we will provide an overview for how many experiments our re-evaluation does (or does not) confirm increased sensitivity.
+
+We will do an \href{https://training.cochrane.org/handbook/current/chapter-26}{Individual Participant Data meta-analysis (IPD)}, using a two-stage approach: First, we extract individual participant data from relevant studies and run a Signal Detection Theory analysis separately for each experiment. Second, we run a meta-analysis on the outcomes.
+
+\section{Methods}\label{methods}
+
+\subsection{Data/Sampling}\label{datasampling}
+
+\subsubsection{Systematic Literature review}\label{systematic-literature-review}
+
+We will base ourselves on the systematic literature review of a recent meta-analysis on people's accuracy judgments of true and false news\textsuperscript{5}. Of all the studies extracted from this review, we will reduce our sample to those that tested an intervention to augment news discernment.
+
+Since the field is rapidly growing, we will also try to add papers that have been published since the systematic review. We will code for all papers whether they were part of the original systematic review of\textsuperscript{5} or identified afterwards, so that the selection process is transparent. In a second pre-registration--after data collection but before analysis--we will publish a full list of studies, detailing whether they were part of the systematic review or added afterwards by us because we came across them.
+
+We have already stored individual level data for several studies used in\textsuperscript{5}. We have yet to collect data for the remaining studies. For the studies that we have already stored individual-level data, we have not yet cleaned it according to the requirements of the study proposed here. We have not performed any of the here suggested analysis on the collected data. We have simulated data to be clear on the data structure our analysis requires and to test how well our model performs in recovering parameters. All analyses presented in this pre-registration use this simulated data.
+
+\subsubsection{Selecting Interventions}\label{selecting-interventions}
+
+Sometimes, within the same experiment, researchers test different interventions, by comparing it to a single control group. For a meta-analysis, this is a problem, \href{https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/effects.html\#unit-of-analysis}{sometimes referred to as double-counting}. The correlations due to the same comparison group cannot be accounted for by a meta-analytic model\textsuperscript{6}. Following options recommended in the \href{https://training.cochrane.org/handbook/current/chapter-23\#section-23-3}{cochrane manual} we use the following rule of thumb: If the interventions are conceptually similar enough, pool the interventions together. If they are too dissimilar, pick the most pertinent one.
+
+It is hard to predict in advance how relevant these decisions will be. However, we will make them on a purely theoretical basis: Once we have collected our data, we will make an overview of all interventions, and make a decision in case of multiple intervention arms within the same experiment. We will preregister these decisions as part of the second pre-registration. Only then will we run the analysis.
+
+We have tried to mimic the situation of multiple intervention groups but only one control group in our simulated data. Some experiments have several interventions, and they are sometimes conceptually similar, sometimes different. Table \ref{tab:intervention-selection-a} shows the experimental structure of the first two simulated papers.
+
+\begin{table}
+\centering
+\caption{\label{tab:intervention-selection-a}Experimental structure of the first two simulated papers}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{rrrl}
+\toprule
+paper\_id & experiment\_id & intervention\_id & intervention\_type\\
+\midrule
+1 & 1 &  & control\\
+1 & 1 & 1 & priming\\
+1 & 2 &  & control\\
+1 & 2 & 1 & warning labels\\
+2 & 1 &  & control\\
+\addlinespace
+2 & 1 & 1 & priming\\
+2 & 1 & 2 & warning labels\\
+2 & 2 &  & control\\
+2 & 2 & 1 & warning labels\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In Paper 1, there are two experiments (experiment\_id = `1' and experiment\_id = `2'). Both experiments only have two arms, respectively: the control group and an intervention group (priming for Experiment 1; warning labels for Experiment 2). In these cases, since there is only one intervention, there is no decision to make as to which intervention to keep. By contrast, the first experiment of Paper 2 has three arms, among with two different intervention types (`priming' and `warning labels'). In such a case, we would need to make a decision on which intervention type to keep. This decision will probably depend on which intervention type occurred how many times etc.
+
+In our data, we will first detect all experiments with multiple interventions (Table \ref{tab:intervention-selection-b})
+
+\begin{table}
+\centering
+\caption{\label{tab:intervention-selection-b}Studies with mutliple intervention arms in the simulated data}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lrll}
+\toprule
+unique\_experiment\_id & n\_different\_intervention\_types & types & conflict\\
+\midrule
+10\_2 & 2 & control, priming, literacy tips & TRUE\\
+10\_3 & 2 & control, priming, warning labels & TRUE\\
+2\_1 & 2 & control, priming, warning labels & TRUE\\
+3\_1 & 2 & control, warning labels, literacy tips & TRUE\\
+4\_1 & 2 & control, literacy tips, priming & TRUE\\
+\addlinespace
+5\_1 & 2 & control, warning labels, priming & TRUE\\
+6\_1 & 2 & control, literacy tips, priming & TRUE\\
+6\_2 & 2 & control, warning labels, literacy tips & TRUE\\
+7\_1 & 2 & control, literacy tips, priming & TRUE\\
+7\_3 & 2 & control, priming, literacy tips & TRUE\\
+\addlinespace
+8\_1 & 2 & control, warning labels, priming & TRUE\\
+9\_1 & 2 & control, warning labels, priming & TRUE\\
+9\_2 & 2 & control, literacy tips, priming & TRUE\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We will then have to make specific exclusion decisions for each experiment.
+
+\begin{table}
+\centering
+\caption{\label{tab:unnamed-chunk-2}Example of exclusion decisions for some of the experiments with multiple intervention arms}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{ll}
+\toprule
+unique\_experiment\_id & exclude\\
+\midrule
+10\_2 & \\
+10\_3 & warning labels\\
+2\_1 & \\
+3\_1 & \\
+4\_1 & \\
+\addlinespace
+5\_1 & \\
+6\_1 & \\
+6\_2 & \\
+7\_1 & \\
+7\_3 & \\
+\addlinespace
+8\_1 & \\
+9\_1 & \\
+9\_2 & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We then filter our data to only keep the intervention conditions we decided upon.
+
+Once all decisions regarding the intervention selections have been made, we can rely our `condition' variable for all models below, which takes only the values of either `control' or `intervention'.
+
+\subsection{Analysis plan}\label{analysis-plan}
+
+\subsubsection{Outcomes}\label{outcomes}
+
+We want to measure the effects of misinformation interventions on two outcomes of Signal Detection Theory (SDT): \(d'\) (``d prime'', sensitivity), and \(c\) (response bias). Table \ref{tab:sdt-vocabulary} shows how instances of news ratings map onto SDT terminology.
+
+\begin{table}
+\centering
+\caption{\label{tab:sdt-vocabulary}Accuracy ratings in Signal Detection Theory terms}
+\centering
+\begin{tabular}[t]{lll}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Response} \\
+\cmidrule(l{3pt}r{3pt}){2-3}
+Stimulus & Accurate & Not Accurate\\
+\midrule
+True news (target) & Hit & Miss\\
+False news (distractor) & False alarm & Correct rejection\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The sensitivity, \(d’\), measures people's capacity to discriminate between true and false news. It is defined as the difference of the standardized hit and false alarm rates
+
+\[
+d' = \Phi^{-1}(HR) - \Phi^{-1}(FAR) 
+\]
+
+where \(HR\) refers to hit rate or the proportion of true news trials that participants classified--correctly--as ``accurate'' (\(HR = \frac{N_{Hits}}{N_{Hits} + N_{Misses}}\)), \(FAR\) refers to false alarm rate or the proportion of false news trials that participants classified--incorrectly--as ``accurate'' (\(HR = \frac{N_{False Alarms}}{N_{FalseAlarms} + N_{Correct Rejections}}\)). \(\Phi\) is the cumulative normal density function, and is used to convert z scores into probabilities. Its inverse, \(\Phi^{-1}\), converts a proportion (such as a hit rate or false alarm rate) into a z score. Below, we refer to standardized hit and false alarm rates as zHR and zFAR, respectively. Due to this transformation, a proportion of .5 is converted to a z score of 0 (reflecting responses at chance). Proportions greater than .5 produce positive z scores, and proportions smaller than .5 negative ones. A positive \(d'\) score indicates that people rate true news as more accurate than false news.
+
+The response bias, \(c\) can be conceived of as an overall tendency to rate items as accurate. It is defined as
+
+\[
+c = -\frac{1}{2}(\text{zHR} + \text{zFAR})
+\]
+
+Note that \(c\) = 0 when \(zFAR = -zHR\). Because \(-zHR = z(1-HR)\) is the (z-transformed) share of misses (true news rated as ``not accurate''), \(c\) = 0 when the false alarm rate is equal to the rate of misses (Macmillan \& Creelman (2004). In other words, if people--mistakenly--rate true news as not accurate (the rate of misses) as much as they--mistakenly--rate false false news as accurate (the rate of false alarms), then there is no response bias. A positive \(c\) score occurs when the miss rate (rating true news news as false) is larger than the false alarm rate (rating false news as true). In other words, a positive \(c\) score indicates that people were more skeptical towards true news than they were gullible towards false news. We refer to this as an overall tendency towards skepticism.
+
+Our outcome of interest is the intervention effects on \(d'\) (``d prime'', sensitivity) and \(c\) (response bias). Since these outcomes are about the difference between the control and the treatment group, we call them ``Delta''. Specifically, they are defined as:
+
+\[
+\Delta d' = d'_{treatment} - d'_{control}
+\]
+
+and
+
+\[
+\Delta c = c_{treatment} - c_{control}.
+\]
+
+A positive \(\Delta d'\) score indicates that the intervention increased participants' ability to discriminate between true and false news compared to the control group. A positive \(\Delta c\) score indicates that the intervention led to a greater tendency towards skepticism, meaning participants were more likely to rate items as ``not accurate'' regardless of veracity, compared to the control group.
+
+\subsubsection{Variables}\label{variables}
+
+Table \ref{tab:codebook} contains a list of variables we will collect. We might not be able to collect all variables for all studies. For political concordance, e.g., this will certainly not be the case.
+
+\begingroup\fontsize{10}{12}\selectfont
+
+\begin{longtable}[t]{>{}l>{\raggedright\arraybackslash}p{25em}}
+\caption{\label{tab:codebook}Codebook for variables to collect}\\
+\toprule
+\textbf{Variable Name} & \textbf{Description}\\
+\midrule
+\endfirsthead
+\caption[]{\label{tab:codebook}Codebook for variables to collect \textit{(continued)}}\\
+\toprule
+\textbf{Variable Name} & \textbf{Description}\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+\textbf{paper\_id} & Identifier for each paper\\
+\textbf{experiment\_id} & Identifier for each experiment within a paper\\
+\textbf{subject\_id} & Identifier of individual participants within an experiment\\
+\textbf{country} & The country of the sample\\
+\textbf{year} & Ideally year of data collection, otherwise year of publication\\
+\addlinespace
+\textbf{veracity} & Identifying false and true news items\\
+\textbf{condition} & Treatment vs. control\\
+\textbf{intervention\_label} & A label for what the intervention consisted of\\
+\textbf{intervention\_description} & A detailed description of the intervention\\
+\textbf{accuracy\_raw} & Participants' accuracy ratings on the scale used in the original study\\
+\addlinespace
+\textbf{scale} & The scale used in the original study\\
+\textbf{originally\_identified\_treatment\_effect} & Whether the authors identified a significant treatment effect (`FALSE` if no, `TRUE` if yes)\\
+\textbf{concordance} & Political concordance of news items (concordant or discordant)\\
+\textbf{age} & Participant age\\
+\textbf{identified\_via} & Indicates if a paper was identified by the systematic review or added after\\
+\addlinespace
+\textbf{id} & Unique participant ID (merged `paper\_id`, `experiment\_id`, `subject\_id`)\\
+\textbf{unique\_experiment\_id} & Unique experiment ID (merged `paper\_id` and `experiment\_id`)\\
+\textbf{accuracy} & Binary version of `accuracy\_raw`; unchanged if originally binary\\*
+\end{longtable}
+\endgroup{}
+
+Building a comparable accuracy measure that we can analyze in the SDT framework outlined here, requires collapsing scales. The studies that we will look at use a variety of scales. Some use a binary scale, which is the one that is the most straightforward to use in a SDT framework (signal vs.~no signal) and thus also the one we have simulated. However, a lot of studies use Likert-type scales. For these studies, we will collapse the original scores into a dichotomized version with answers of either `accurate' (0) or `not accurate' (1). For example, a study might have used a 4-point scale going from 1, not accurate at all, to 4, completely accurate. In this case, we will code responses of 1 and 2 as not accurate (0) and 3 and 4 as accurate (1). For scales, with a mid-point (example 3 on a 5-point scale), we will code midpoint answers as `NA', meaning they will be excluded from the analysis.
+
+\subsubsection{Main Analysis}\label{main-analysis}
+
+We will run a participant-level meta analysis using a two-stage approach: First, for each experiment, we calculate a generalized linear mixed model (glmm) that yields SDT outcomes. The resulting estimates are our effect sizes. Second, we run a meta analysis on these effect sizes. In Appendix \ref{step-by-step} to this registration, we explain step by step how to go from a by-hand SDT analysis to a glmm SDT analysis. In the following, we will outline the analysis steps we will perform.
+
+\paragraph{Stage 1: experiment-level analysis}\label{stage-1-experiment-level-analysis}
+
+For each experiment, we run a separate participant-level SDT analysis. Because participants provide several ratings, we use mixed-models with random participant effects that account for the resulting dependency in the data points. We use random effects both for the intercept and the effect of veracity. We do not use random effects for condition or the interaction of condition and veracity, as condition is typically manipulated between participants. We can obtain SDT outcomes directly from a generalized linear mixed model (glmm) when using a probit link function (see Appendix \ref{step-by-step}). Table \ref{tab:example-outcome-exp1} shows the model output for our simulated Experiment 1, from paper 1.
+
+We calculate one model per experiment and store the results in a common data frame.
+
+We code our binary independent variables, veracity and condition, using deviation coding (i.e.~for veracity, false = -0.5, true = 0.5; for condition, control = -0.5, treatment = 0.5). Using deviation coding, the main effect model output terms translate to SDT outcomes as follows:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{(Intercept)} = average -\(c\), pooled across all conditions
+\item
+  \texttt{veracity\_numeric} = average \(d'\), pooled across all conditions
+\item
+  \texttt{condition\_numeric} = -\(\Delta c\), i.e.~the change in -response bias between control and treatment
+\item
+  \texttt{veracity\_numeric:condition\_numeric} = \(\Delta d'\), i.e.~the change in sensitivity between control and treatment
+\end{itemize}
+
+\begin{table}
+\centering
+\caption{\label{tab:example-outcome-exp1}Results of a generalize linear mixed model (glmm)}
+\centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{lrrrrrlrlrr}
+\toprule
+term & estimate & std.error & statistic & p.value & time\_minutes & unique\_experiment\_id & paper\_id & SDT\_term & SDT\_estimate & sampling\_variance\\
+\midrule
+(Intercept) & -0.514 & 0.032 & -16.175 & 0.000 & 0.01 & 1\_1 & 1 & average c & 0.514 & 0.001\\
+veracity\_numeric & 0.786 & 0.062 & 12.711 & 0.000 & 0.01 & 1\_1 & 1 & average d' & 0.786 & 0.004\\
+condition\_numeric & -0.119 & 0.063 & -1.892 & 0.059 & 0.01 & 1\_1 & 1 & delta c & 0.119 & 0.004\\
+veracity\_numeric:condition\_numeric & -0.285 & 0.123 & -2.312 & 0.021 & 0.01 & 1\_1 & 1 & delta d' & -0.285 & 0.015\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+As shown in Figure \ref{fig:distributions}, we can then plot the distributions of our outcome estimates of interest, across experiments.
+
+
+
+\begin{figure}
+\centering
+\includegraphics{output/figures/distributions.pdf}
+\caption{\label{fig:distributions}Distributions of Signal Detection Theory outcomes across experiments. Note that these distributions are purely descriptive - effect sizes are not weighted by sample size of the respective experiment, as they are in the meta-analysis.}
+\end{figure}
+
+\paragraph{Stage 2: Meta-analysis}\label{stage-2-meta-analysis}
+
+Next, we run a meta analysis on these effect size estimates at the experiment-level. In our models for the meta analysis, each effect size is weighted by the inverse of its standard error, thereby giving more weight to experiments with larger sample sizes. We will use random effects models, which assume that there is not only one true effect size but a distribution of true effect sizes. We will use a multi-level meta-analytic model, with random effects at the publication and the experiment level. This approach allows us to account for the hierarchical structure of our data, in which (at least some) papers (level three) contribute several effect sizes from different experiments (level two)\footnote{Level 1 being the the participant level, i.e.~the sampling variation of the original studies, see\textsuperscript{6}.}. However, the multi-level models do not account for dependencies in sampling error. When one paper contributes several effect sizes, one might expect their respective sampling errors to be correlated. To account for dependency in sampling errors, we compute cluster-robust standard errors, confidence intervals, and statistical tests for all meta-analytic estimates. For our simulated data, Table \ref{tab:meta-model-results} shows the results of the meta-analytic models and Figure \ref{fig:forest} provides an overview of effect sizes for each experiment as a forest plot.
+
+\begin{table}
+\centering
+\caption{\label{tab:meta-model-results}Results of Meta-analysis}
+\centering
+\begin{tabular}[t]{lcc}
+\toprule
+  & Delta d' & Delta c\\
+\midrule
+overall & 0.100* & 0.078*\\
+ & (0.043) & (0.032)\\
+\midrule
+Num.Obs. & 21 & 21\\
+AIC & -8.1 & -20.4\\
+BIC & -4.9 & -17.3\\
+\bottomrule
+\multicolumn{3}{l}{\rule{0pt}{1em}+ p $<$ 0.1, * p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
+\end{tabular}
+\end{table}
+
+
+
+\begin{figure}
+\centering
+\includegraphics{output/figures/forest.pdf}
+\caption{\label{fig:forest}\emph{Forest plots for delta d' and delta c}. The figure displays all effect sizes for both outcomes. Effects are weighed by their sample size. Effect sizes are z-values. Horizontal bars represent 95\% confidence intervals. The average estimate is the result of a multilevel meta model with clustered standard errors at the sample level.}
+\end{figure}
+
+\subsubsection{Moderator analysis}\label{moderator-analysis}
+
+We distinguish between two broad kinds of moderator variables: those that vary within-experiments (e.g.~political concordance) and those that vary between experiments (e.g.~intervention type). We will use different approaches for these two kinds.
+
+\paragraph{a. within-experiment variables}\label{a.-within-experiment-variables}
+
+There are two moderator variables that vary within-experiments that we will test: age and political concordance. Age varies within experiments, but between participants (each participant can only have one age). Political concordance varies not only within experiments, and also within participants--in the typical experiment design, each participant is shown both concordant and discordant items. In the text, we will focus on political concordance, which requires slightly more complex modelling, but provide the models for age in the respective code chunks.
+
+We have two options: (i) integrating political concordance in our baseline model. While this would be the straightforward thing to do, it involves a three-way interaction with many random effects and will likely bring up convergence issues; (ii) run our baseline model separately for concordant and discordant items. Then, proceed just as for between-experiment moderators.
+
+\subparagraph{i. Integrating Concordance in baseline model}\label{i.-integrating-concordance-in-baseline-model}
+
+In the first option, we add political concordance to our Stage 1 model, such that we have a three-way interaction between veracity, condition and political concordance.
+
+Table \ref{tab:glmm-example-experiment1} illustrates the model output for the first experiment (Experiment 1 of Paper 1) in our simulated data.
+
+\begin{table}
+\centering
+\caption{\label{tab:glmm-example-experiment1}Results of the generalized linear mixed model (glmm) on the first experiment (Experiment 1 of Paper 1) in our simulated data.}
+\centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{lrrrrrrr}
+\toprule
+term & estimate & std.error & statistic & p.value & conf.low & conf.high & time\_minutes\\
+\midrule
+(Intercept) & -0.510 & 0.033 & -15.511 & 0.000 & -0.574 & -0.445 & 0.05\\
+veracity\_numeric & 0.808 & 0.063 & 12.740 & 0.000 & 0.684 & 0.933 & 0.05\\
+condition\_numeric & -0.112 & 0.065 & -1.723 & 0.085 & -0.239 & 0.015 & 0.05\\
+concordance\_numeric & -0.095 & 0.063 & -1.504 & 0.133 & -0.219 & 0.029 & 0.05\\
+veracity\_numeric:condition\_numeric & -0.287 & 0.126 & -2.283 & 0.022 & -0.534 & -0.041 & 0.05\\
+\addlinespace
+veracity\_numeric:concordance\_numeric & -0.181 & 0.129 & -1.400 & 0.161 & -0.435 & 0.072 & 0.05\\
+condition\_numeric:concordance\_numeric & -0.009 & 0.125 & -0.074 & 0.941 & -0.255 & 0.236 & 0.05\\
+veracity\_numeric:condition\_numeric:concordance\_numeric & -0.197 & 0.255 & -0.770 & 0.441 & -0.697 & 0.304 & 0.05\\
+sd\_\_(Intercept) & 0.119 &  &  &  &  &  & 0.05\\
+cor\_\_(Intercept).veracity\_numeric & 1.000 &  &  &  &  &  & 0.05\\
+\addlinespace
+cor\_\_(Intercept).veracity\_numeric:concordance\_numeric & 1.000 &  &  &  &  &  & 0.05\\
+sd\_\_veracity\_numeric & 0.085 &  &  &  &  &  & 0.05\\
+cor\_\_veracity\_numeric.veracity\_numeric:concordance\_numeric & 1.000 &  &  &  &  &  & 0.05\\
+sd\_\_veracity\_numeric:concordance\_numeric & 0.342 &  &  &  &  &  & 0.05\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+Given that all our binary variables in the data are deviation-coded (-0.5 vs.~0.5) outputs are to be interpreted as follows:
+
+Due to our coding for the two independent variables, the coefficients have the following interpretation:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{(Intercept)} = average -\(c\), pooled across all conditions
+\item
+  \texttt{veracity\_numeric} = average \(d'\), pooled across all conditions
+\item
+  \texttt{condition\_numeric} = -\(\Delta c_{\text{condition}}\), i.e.~the change in -response bias between control and treatment, pooled across concordant and discordant items
+\item
+  \texttt{concordance\_numeric} = -\(\Delta c_{\text{concordance}}\), i.e.~the change in -response bias between concordant and discordant items, pooled across control and treatment
+\item
+  \texttt{veracity\_numeric:condition\_numeric} = \(\Delta d'_{\text{condition}}\), i.e.~the change in sensitivity between control and treatment, pooled across concordant and discordant items
+\item
+  \texttt{veracity\_numeric:concordance\_numeric} = \(\Delta d'_{\text{concordance}}\), i.e.~the change in sensitivity between concordant and discordant items, pooled across control and treatment
+\item
+  \texttt{condition\_numeric:concordance\_numeric} = Effect of concordance on -\(\Delta c_{\text{condition}}\),
+\item
+  \texttt{veracity\_numeric:condition\_numeric:concordance\_numeric} = Effect of concordance on \(\Delta d'_{\text{condition}}\)
+\end{itemize}
+
+Since interpretation can get a bit complex in three-way interactions \href{https://psyteachr.github.io/stat-models-v1/interactions.html\#the-key-coding-schemes}{here is a good ressource}, we demonstrate below that the model estimates correspond to their respective SDT outcomes.
+
+To do so, we first run the same model as before, on the same data as before (Experiment 1 of Paper 1), but removing the random effects, so that our model estimates will correspond to the estimates from a by-hand Signal Detection Theory analysis (Table \ref{tab:glm-example-experiment1}).
+
+\begin{table}
+\centering
+\caption{\label{tab:glm-example-experiment1}Results of the generalized linear model (glm), i.e. without random effects, on the first experiment (Experiment 1 of Paper 1) in our simulated data.}
+\centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{lrrrrrl}
+\toprule
+term & estimate & std.error & statistic & p.value & SDT\_estimate & SDT\_term\\
+\midrule
+(Intercept) & -0.504 & 0.031 & -16.190 & 0.000 & 0.504 & average response bias (c)\\
+veracity\_numeric & 0.804 & 0.062 & 12.917 & 0.000 & 0.804 & average sensitivity (d')\\
+condition\_numeric & -0.109 & 0.062 & -1.750 & 0.080 & 0.109 & delta c (condition)\\
+concordance\_numeric & -0.099 & 0.062 & -1.591 & 0.112 & 0.099 & delta c (concordance)\\
+veracity\_numeric:condition\_numeric & -0.282 & 0.125 & -2.263 & 0.024 & -0.282 & delta d' (condition)\\
+\addlinespace
+veracity\_numeric:concordance\_numeric & -0.159 & 0.125 & -1.278 & 0.201 & -0.159 & delta d' (concordance)\\
+condition\_numeric:concordance\_numeric & -0.005 & 0.125 & -0.037 & 0.970 & 0.005 & effect of concordance on delta c (condition)\\
+veracity\_numeric:condition\_numeric:concordance\_numeric & -0.187 & 0.249 & -0.750 & 0.453 & -0.187 & effect of concordance on delta d' (condition)\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+We can calculate the Signal Detection Theory outcomes by hand as from the summary data shown in Table \ref{tab:summary-SDT-data}.
+
+\begin{table}
+\centering
+\caption{\label{tab:summary-SDT-data}Summary data grouped by experimental condition for (Experiment 1 of Paper 1) in our simulated data.}
+\centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{llrrrrrrrr}
+\toprule
+condition & political\_concordance & correct\_rejection & false\_alarm & hit & miss & z\_hit\_rate & z\_false\_alarm\_rate & dprime & c\\
+\midrule
+control & concordant & 166 & 34 & 145 & 155 & -0.0417893 & -0.9541653 & 0.9123760 & 0.4979773\\
+control & discordant & 244 & 56 & 107 & 93 & 0.0878448 & -0.8902469 & 0.9780917 & 0.4012010\\
+intervention & concordant & 162 & 38 & 110 & 190 & -0.3406948 & -0.8778963 & 0.5372015 & 0.6092956\\
+intervention & discordant & 245 & 55 & 91 & 109 & -0.1130385 & -0.9027348 & 0.7896963 & 0.5078867\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+Based on this data, we can calculate the average response bias (\texttt{(Intercept)}) and sensitivity (\texttt{veracity\_numeric}), pooled across all conditions; our treatment effects \texttt{delta\_dprime} (\texttt{veracity\_numeric:condition\_numeric} in the model output) and \texttt{delta\_c} (\texttt{condition\_numeric} in the model output) from before, i.e.~ignoring/pooling across political concordance; the differences in response bias (\texttt{concordance\_numeric} in the model output) and sensitivity (\texttt{veracity\_numeric:concordance\_numeric} in the model output) between concordant and discordant items, pooling across control and treatment groups; the moderator effect of convergence on our original treatment effects \texttt{delta\_dprime} and \texttt{delta\_c}, i.e.~how much stronger/weaker the effects on response bias (\texttt{condition\_numeric:concordance\_numeric} in the model output) and sensitivity (\texttt{veracity\_numeric:condition\_numeric:concordance\_numeric} in the model output) are for concordant items, compared to discordant ones. Table \ref{tab:moderator-SDT-by-hand} shows the results of these by-hand calculations. Comparing the results from the by-hand calculation (Table \ref{tab:moderator-SDT-by-hand}) and the glm (Table \ref{tab:glm-example-experiment1}), we note that the results are the same.
+
+\begin{table}
+\centering
+\caption{\label{tab:moderator-SDT-by-hand}Outcomes from by-hand SDT calculation.}
+\centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lr}
+\toprule
+Outcome & Value\\
+\midrule
+average\_dprime & 0.804\\
+average\_c & 0.504\\
+delta\_dprime & -0.282\\
+delta\_c & 0.109\\
+delta\_dprime\_concordance & -0.159\\
+\addlinespace
+delta\_c\_concordance & 0.099\\
+moderator\_effect\_dprime & -0.187\\
+moderator\_effect\_c & 0.005\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+Just as we do for our main analysis, we estimate the model for each experiment separately and store the results in a common data frame.
+
+We then run the same meta-analytic model as for the main analysis, but on the moderator effect estimates. Table \ref{tab:concordance-individual-level} shows the results of these models.
+
+\begin{table}
+\centering
+\caption{\label{tab:concordance-individual-level}Moderator analysis for politicial concordance based on an individual-level estimates}
+\centering
+\begin{tabular}[t]{lcc}
+\toprule
+  & Delta d' & Delta c\\
+\midrule
+Effect of political concordance & -0.002 & 0.009\\
+ & (0.055) & (0.029)\\
+\midrule
+Num.Obs. & 21 & 21\\
+AIC & 5.1 & -20.4\\
+BIC & 8.2 & -17.2\\
+\bottomrule
+\multicolumn{3}{l}{\rule{0pt}{1em}+ p $<$ 0.1, * p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
+\end{tabular}
+\end{table}
+
+\subparagraph{ii. Running separate baseline models for concordance}\label{ii.-running-separate-baseline-models-for-concordance}
+
+If we encounter serious convergence issues by integrating the moderator variable in the individual-level model, we will use an alternative strategy. It consists in calculating separate models for concordant and discordant items, and then running a meta-regressions.
+
+This procedure is basically the same as for between-experiment variables (see next section) and run a meta-regression, but there is a slight difference in the meta-regression model specifications: In the case of political concordance, our outcome data frame on which we run the meta-analysis contains two observations per experiment--one for discordant, the other for concordant items. We want to account for this dependency structure with a slightly different random effects structure, where observations are nested in experiments.
+
+Table \ref{tab:concordance-separate-baseline-model} shows the outcome of this meta-regression based on separate baseline estimates for concordant and discordant news items. In our simulated data--where no true moderator effect was modeled--these estimates are larger than the once we obtain from the intregrated individual-level model (Table \ref{tab:concordance-individual-level}), but reassuringly they are not significant in either case.
+
+\begin{table}
+\centering
+\caption{\label{tab:concordance-separate-baseline-model}Moderator analysis for political concordance based on a meta-regression}
+\centering
+\begin{tabular}[t]{lcc}
+\toprule
+  & Delta d' & Delta c\\
+\midrule
+intercept & 0.522*** & 0.485***\\
+ & (0.038) & (0.025)\\
+moderatordiscordant & 0.011 & 0.021\\
+ & (0.029) & (0.015)\\
+\midrule
+Num.Obs. & 44 & 44\\
+AIC & -37.5 & -96.7\\
+BIC & -30.4 & -89.6\\
+\bottomrule
+\multicolumn{3}{l}{\rule{0pt}{1em}+ p $<$ 0.1, * p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
+\end{tabular}
+\end{table}
+
+\paragraph{b. Between-experiment variables}\label{b.-between-experiment-variables}
+
+The main between-experiment variable we will look at here is interventions type. In our simulated data, we made up three intervention types (``literacy tips'', ``priming'', ``warning labels''). We run a meta-regression, in which we add intervention type as a covariate to the meta-analytic model from the main analysis. The results of this analaysis in our simulated data--where no true moderator effect was modeled--can be found in Table \ref{tab:intervention-type-moderator}.
+
+\begin{table}
+\centering
+\caption{\label{tab:intervention-type-moderator}Moderator analysis for intervention type}
+\centering
+\begin{tabular}[t]{lcc}
+\toprule
+  & Delta d' & Delta c\\
+\midrule
+intercept & 0.101* & -0.078*\\
+ & (0.046) & (0.032)\\
+moderatorliteracy tips & 0.001 & 0.001\\
+ & (0.042) & (0.021)\\
+moderatorpriming & 0.000 & 0.000\\
+ & (0.005) & (0.005)\\
+moderatorwarning labels & -0.008 & -0.006\\
+ & (0.046) & (0.023)\\
+\midrule
+Num.Obs. & 52 & 52\\
+AIC & -76.2 & -135.3\\
+BIC & -64.5 & -123.6\\
+\bottomrule
+\multicolumn{3}{l}{\rule{0pt}{1em}+ p $<$ 0.1, * p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
+\end{tabular}
+\end{table}
+
+\subsection{Sensitivity Analysis}\label{sensitivity-analysis}
+
+Since we are running a meta-analysis based on a systematic review, we cannot control the final sample size. To have rough estimate on the statistical power we anticipate our study to have, we ran a sensitivity analysis based on a simulation. For the simulation, we--conservatively--assumed that the meta-analysis sample will consist of 10 papers. We assumed that each paper has between 1 and 4 experiments, and each experiment can have between two and four experimental arms (one of which is always the control condition). For each experimental arm, we assumed a sample size of 100 participants. The number of experiments per paper and arms per experiments was chosen randomly for each study. We further assumed that participants always saw 5 true and 5 false news. For details about other parameter assumptions, see the parameter list specified above. Although our final sample of papers will probably have properties quite different from what we assumed here, we believe these assumptions are rather conservative.
+
+In our simulations, we varied the values (small = 0.2, medium = 0.5, large = 0.8) for the true effect sizes for d' and c in the data. For each combination of the two effect sizes, we run 100 iterations, i.e.~100 times we generate a different sample of 10 papers, and run our meta-analysis on that sample. The aim of the sensitivity analysis consists in checking how many of these 100 meta-analyses find a significant effect. The share of analyses that detect the true effect is the statistical power.
+
+As shown in Figure \ref{fig:sensitivity-dprime} for d' and in Figure \ref{fig:sensitivity-c} for c, even for very small effect sizes (0.2), we find statistical power greater than 90\%, given our assumptions. For d', the value of c does not appear to affect the statistical power. For c, a low d' (0.2) appears to yield slightly lower statistical power than a medium (0.5) or large (0.8) d.
+
+
+
+\begin{figure}
+\centering
+\includegraphics{output/figures/sensitivity-dprime.pdf}
+\caption{\label{fig:sensitivity-dprime}Results of sensitivity analysis for Delta d'. The plot shows the power curve, i.e.~the share of statistically significant effects across 100 simulated meta-analyses for each pair of values of d' (x-axis) and c (color legend).}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\includegraphics{output/figures/sensitivity-c.pdf}
+\caption{\label{fig:sensitivity-c}Results of sensitivity analysis for Delta c.~The plot shows the power curve, i.e.~the share of statistically significant effects across 100 simulated meta-analyses for each pair of values of c (x-axis) and d' (color legend).}
+\end{figure}
+
+\subsection{Parameter Recovery}\label{parameter-recovery}
+
+Instead of only checking whether our models find a significant effect or not, we also descriptively check how well our model recovers the data generating parameters accros the different samples.
+
+As shown in Figure \ref{fig:sensitivity-parameter-dprime} for d' and Figure \ref{fig:sensitivity-parameter-c} for c, we find that the distributions of meta-analytic estimates across the 100 samples per pair of effect sizes are centered around the true data generating parameter when the effect size is small (0.2). With an increasing true effect size, however, the estiamte distributions tend to be shifted to the left of the parameter, which suggests that our models consistently underestimate the true effect.
+
+Overall, our simulation suggests that (i) given conservative sample size assumptions, we will have large enough statistical power to detect even small effects, and (ii) that our model might slightly underestimates true effect sizes, which makes it a conservative estimator.
+
+
+
+\begin{figure}
+\centering
+\includegraphics{output/figures/sensitivity-parameter-dprime.pdf}
+\caption{\label{fig:sensitivity-parameter-dprime}Distributions of Delta d' across simulated meta-analyses. The plot shows the distribution of meta-analytic estimates, for each combination of Delta d' and Delta c values.}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\includegraphics{output/figures/sensitivity-parameter-c.pdf}
+\caption{\label{fig:sensitivity-parameter-c}Distributions of Delta c across simulated meta-analyses. The plot shows the distribution of meta-analytic estimates, for each combination of Delta c and Delta d' values.}
+\end{figure}
+
+\section{Data availability}\label{data-availability}
+
+\section{Code availability}\label{code-availability}
+
+\FloatBarrier
+
+\section{References}\label{references}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{0}{0}
+\bibitem[\citeproctext]{ref-guayHowThinkWhether2023}
+\CSLLeftMargin{1. }%
+\CSLRightInline{Guay, B., Berinsky, A. J., Pennycook, G. \& Rand, D. \href{https://doi.org/10.1038/s41562-023-01667-w}{How to think about whether misinformation interventions work}. \emph{Nature Human Behaviour} \textbf{7}, 1231--1233 (2023).}
+
+\bibitem[\citeproctext]{ref-highamMeanRatingDifference2024a}
+\CSLLeftMargin{2. }%
+\CSLRightInline{Higham, P. A., Modirrousta-Galian, A. \& Seabrooke, T. \href{https://doi.org/10.1016/j.copsyc.2023.101785}{Mean rating difference scores are poor measures of discernment: The role of response criteria}. \emph{Current Opinion in Psychology} \textbf{56}, 101785 (2024).}
+
+\bibitem[\citeproctext]{ref-gawronskiSignaldetectionFrameworkMisinformation2024}
+\CSLLeftMargin{3. }%
+\CSLRightInline{Gawronski, B., Nahon, L. S. \& Ng, N. L. A signal-detection framework for misinformation interventions. \emph{Nature Human Behaviour} 1--3 (2024) doi:\href{https://doi.org/10.1038/s41562-024-02021-4}{10.1038/s41562-024-02021-4}.}
+
+\bibitem[\citeproctext]{ref-modirrousta-galianGamifiedInoculationInterventions2023}
+\CSLLeftMargin{4. }%
+\CSLRightInline{Modirrousta-Galian, A. \& Higham, P. A. Gamified inoculation interventions do not improve discrimination between true and fake news: Reanalyzing existing research with receiver operating characteristic analysis. \emph{Journal of Experimental Psychology: General} (2023).}
+
+\bibitem[\citeproctext]{ref-pfanderSpottingFalseNews2024}
+\CSLLeftMargin{5. }%
+\CSLRightInline{Pfänder, J. \& Altay, S. Spotting false news and doubting true news: A meta-analysis of news judgments. (2024) doi:\href{https://doi.org/10.31219/osf.io/n9h4y}{10.31219/osf.io/n9h4y}.}
+
+\bibitem[\citeproctext]{ref-harrer2021}
+\CSLLeftMargin{6. }%
+\CSLRightInline{Harrer, M., Cuijpers, P., A, F. T. \& Ebert, D. D. \emph{Doing meta-analysis with r: A hands-on guide}. (Chapman \& Hall/CRC Press, 2021).}
+
+\bibitem[\citeproctext]{ref-bataillerSignalDetectionApproach2022}
+\CSLLeftMargin{7. }%
+\CSLRightInline{Batailler, C., Brannon, S. M., Teas, P. E. \& Gawronski, B. \href{https://doi.org/10.1177/1745691620986135}{A Signal Detection Approach to Understanding the Identification of Fake News}. \emph{Perspectives on Psychological Science} \textbf{17}, 78--98 (2022).}
+
+\end{CSLReferences}
+
+\newpage
+
+\appendix
+
+
+\section{From basic Signal Detection Theory (SDT) to mixed models step-by-step}\label{step-by-step}
+
+In this appendix, we explain step-by-step how to go from a by-hand to a generalized linear mixed model (glmm) Signal Detection Theory (SDT) analysis.
+
+\subsection{Basic Signal Detection Theory}\label{basic-signal-detection-theory}
+
+\FloatBarrier
+
+After having classified instances of news ratings according to SDT terminology (Table \ref{tab:sdt-vocabulary}), we can manually calculate SDT outcomes. Table \ref{tab:by-hand-sdt-experiment1} shows by-hand calculated SDT outcomes for the first experiment of our simulated meta-analysis sample.
+
+\begin{table}
+\centering
+\caption{\label{tab:by-hand-sdt-experiment1}SDT outcomes calculated by-hand for Experiment 1 of simulated data.}
+\centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{lrrrrrrrr}
+\toprule
+condition & correct\_rejection & false\_alarm & hit & miss & z\_hit\_rate & z\_false\_alarm\_rate & dprime & c\\
+\midrule
+control & 410 & 90 & 252 & 248 & 0.010 & -0.915 & 0.925 & 0.453\\
+intervention & 407 & 93 & 201 & 299 & -0.248 & -0.893 & 0.645 & 0.570\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+Our treatment effects are the differences between the control and treatment group. We therefor call them \texttt{delta\_dprime} and \texttt{delta\_c} here (see Table \ref{tab:by-hand-outcomes-experiment1}).
+
+\begin{table}
+\centering
+\caption{\label{tab:by-hand-outcomes-experiment1}SDT treatment effects calculated by-hand for Experiment 1 of simulated data.}
+\centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{rr}
+\toprule
+delta\_dprime & delta\_c\\
+\midrule
+-0.281 & 0.118\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsubsection{b. SDT in Generalized Mixed Model (glm)}\label{b.-sdt-in-generalized-mixed-model-glm}
+
+To obtain test statistics for these outcomes, we can do the equivalent analysis in a generalized linear model (glm), using a probit link function. We use deviation coding for our veracity (fake = -0.5, true = 0.5) and condition (-0.5 = control, 0.5 = intervention) variables. Table \ref{tab:glm-experiment1} shows the results of the glm.
+
+\begin{table}
+\centering
+\caption{\label{tab:glm-experiment1}Summary of glm results for Experiment 1 of simulated data}
+\centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{10}{12}\selectfont
+\begin{tabular}[t]{lrrrl}
+\toprule
+Term & Estimate & p-value & SDT Estiamte & SDT Term\\
+\midrule
+(Intercept) & -0.512 & 0.000 & 0.512 & Average c (pooled across all conditions)\\
+veracity\_numeric & 0.785 & 0.000 & 0.785 & Average d' (pooled across all conditions)\\
+condition\_numeric & -0.118 & 0.053 & 0.118 & Delta c (change in -response bias between control and treatment)\\
+veracity\_numeric:condition\_numeric & -0.281 & 0.021 & -0.281 & Delta d' (change in sensitivity between control and treatment)\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+Due to our coding for the two independent variables, the coefficients have the following interpretation:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{(Intercept)} = average -\(c\), pooled across all conditions
+\item
+  \texttt{veracity\_numeric} = average \(d'\), pooled across all conditions
+\item
+  \texttt{condition\_numeric} = -\(\Delta c\), i.e.~the change in -response bias between control and treatment
+\item
+  \texttt{veracity\_numeric:condition\_numeric} = \(\Delta d'\), i.e.~the change in sensitivity between control and treatment
+\end{itemize}
+
+\subsubsection{c.~SDT in mixed models}\label{c.-sdt-in-mixed-models}
+
+However, this analysis is naive, because it treats all observations (instances of news ratings) as independent. Yet, participants give several ratings, and news ratings from the same participant are not independent of each other.
+
+\paragraph{i. Participant averages}\label{i.-participant-averages}
+
+One simple way to account for this dependency is to compute participant-level outcomes, and using these averages as observations. This way, each participant only contributes one data point. Figure \ref{fig:individual-level-plot} shows the distributions of participants' averages for Experiment 1 of the simulated data. To obtain estimates for our treatment effects \(\Delta c\) and \(\Delta d'\), we can then run a linear regression with condition as a predictor (or do a t-test). The results of these regressions are shown in Table \ref{tab:by-participant-SDT-regression}.
+
+
+
+\begin{figure}
+\centering
+\includegraphics{output/figures/individual-level-plot.pdf}
+\caption{\label{fig:individual-level-plot}Distribution of participant-level averages for Experiment 1 of the simulated data. The percentage labels (from left to right) represent the share of participants with a negative score, a score of exactly 0, and a positive score, for both measures respectively. Note that when calculating by-participant averages, we follow\textsuperscript{7} in applying log-linear rule correction. This is particularly relevant for cases when the hit rate or the false alarm rate take the values of 0 (case in which qnorm(0) = -Inf) or 1 (case in which qnorm(1) = Inf).}
+\end{figure}
+
+\begin{table}
+\centering
+\caption{\label{tab:by-participant-SDT-regression}SDT outcomes based on a regression on participant-level averages}
+\centering
+\begin{tabular}[t]{lcc}
+\toprule
+  & d' & c\\
+\midrule
+(Intercept) & 0.814*** & 0.402***\\
+ & (0.068) & (0.038)\\
+Treatment Effect & -0.263** & 0.101+\\
+ & (0.096) & (0.054)\\
+\midrule
+Num.Obs. & 200 & 200\\
+R2 & 0.036 & 0.017\\
+R2 Adj. & 0.031 & 0.012\\
+AIC & 417.5 & 186.1\\
+BIC & 427.4 & 196.0\\
+Log.Lik. & -205.768 & -90.061\\
+RMSE & 0.68 & 0.38\\
+\bottomrule
+\multicolumn{3}{l}{\rule{0pt}{1em}+ p $<$ 0.1, * p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
+\end{tabular}
+\end{table}
+
+By comparing the results of the regression based on participant-level averages (Table \ref{tab:by-participant-SDT-regression}), to the results of the glm at the rating-level and which glosses over participant dependencies (Table \ref{tab:glm-experiment1}), we can see that the stimates for our outcomes \(\Delta c\) and \(\Delta d'\)are slightly different. However, we can account even better for our data structure, and estimate both within and between participant variation separately by using a generalized linear mixed model (glmm).
+
+\paragraph{ii. Mixed model SDT}\label{ii.-mixed-model-sdt}
+
+Using a glm with probit link function as above, we can additionally specify random effects. The result is a generalized linear mixed model (glmm). Adding random effects for participants allows us to model the dependency of data points from the same participant, thereby account for these difference, while not loosing data points as in the participant-averages approach discussed above.
+
+Table \ref{tab:glmm-experiment1} shows that, for our simulated experiment 1, the estimates of the glmm are close to, but slightly different from, the initial gml without random effects (Table \ref{tab:glm-experiment1}).
+
+\begin{table}
+\centering
+\caption{\label{tab:glmm-experiment1}Results of a generalize linear mixed model (glmm)}
+\centering
+\resizebox{\ifdim\width>\linewidth\linewidth\else\width\fi}{!}{
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{lrrrrlr}
+\toprule
+term & estimate & std.error & statistic & p.value & SDT\_term & SDT\_estimate\\
+\midrule
+(Intercept) & -0.514 & 0.032 & -16.175 & 0.000 & Average c (pooled across all conditions) & 0.514\\
+veracity\_numeric & 0.786 & 0.062 & 12.711 & 0.000 & Average d' (pooled across all conditions) & 0.786\\
+condition\_numeric & -0.119 & 0.063 & -1.892 & 0.059 & Delta c (change in -response bias between control and treatment) & 0.119\\
+veracity\_numeric:condition\_numeric & -0.285 & 0.123 & -2.312 & 0.021 & Delta d' (change in sensitivity between control and treatment) & -0.285\\
+sd\_\_(Intercept) & 0.109 &  &  &  & Other & 0.109\\
+\addlinespace
+cor\_\_(Intercept).veracity\_numeric & 1.000 &  &  &  & Other & 1.000\\
+sd\_\_veracity\_numeric & 0.090 &  &  &  & Other & 0.090\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+
+\end{document}

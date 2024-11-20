@@ -1,0 +1,40 @@
+---
+format: gfm
+---
+
+<!-- README.md is generated from README.qmd. Please edit that file -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-",
+  fig.retina = 3
+)
+
+yaml_metadata <- rmarkdown::yaml_front_matter(here::here("preregistration.Rmd"))
+title <- yaml_metadata$title
+abstract <- yaml_metadata$abstract
+```
+
+# `r title`
+
+---
+
+## Abstract
+
+`r abstract`
+
+---
+
+## Session info {#session-info}
+
+```{r, echo=FALSE}
+sessionInfo()
+```
+
+## Licenses
+
+**Text and figures:** All prose and images are licensed under Creative Commons ([CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/)).
+
+**Code:** All code is licensed under the [MIT License](LICENSE.md).

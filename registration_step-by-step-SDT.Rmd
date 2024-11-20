@@ -1,0 +1,297 @@
+---
+bibliography: references.bib
+---
+
+# From basic Signal Detection Theory (SDT) to mixed models step-by-step {#step-by-step}
+
+In this appendix, we explain step-by-step how to go from a by-hand to a generalized linear mixed model (glmm) Signal Detection Theory (SDT) analysis.
+
+## Basic Signal Detection Theory
+
+\FloatBarrier
+
+After having classified instances of news ratings according to SDT terminology (Table \@ref(tab:sdt-vocabulary)), we can manually calculate SDT outcomes. Table \@ref(tab:by-hand-sdt-experiment1) shows by-hand calculated SDT outcomes for the first experiment of our simulated meta-analysis sample.
+
+```{r}
+# Pick a single experiment
+data_experiment_1 <- sdt_data %>% 
+  filter(unique_experiment_id == "1_1")
+
+# calculate SDT outcomes per condition
+sdt_outcomes <- data_experiment_1 %>% 
+  group_by(sdt_outcome, condition) %>%
+  count() %>% 
+  pivot_wider(names_from = sdt_outcome, 
+              values_from = n) %>% 
+  mutate(
+    z_hit_rate = qnorm(hit / (hit + miss)),
+    z_false_alarm_rate = qnorm(false_alarm / (false_alarm + correct_rejection)),
+    dprime = z_hit_rate - z_false_alarm_rate,
+    c = -1 * (z_hit_rate + z_false_alarm_rate) / 2
+  ) %>% 
+  ungroup()
+```
+
+```{r by-hand-sdt-experiment1}
+sdt_outcomes %>% 
+  rounded_numbers() %>% 
+  kable(
+    caption = "SDT outcomes calculated by-hand for Experiment 1 of simulated data.",
+    booktabs = TRUE) %>%
+  kable_styling(font_size = 8,  # Set a smaller font size
+                latex_options = c("scale_down")) # Scale down the table
+```
+
+Our treatment effects are the differences between the control and treatment group. We therefor call them `delta_dprime` and `delta_c` here (see Table \@ref(tab:by-hand-outcomes-experiment1)).
+
+```{r}
+treatment_effects <- sdt_outcomes %>%
+  select(condition, dprime, c) %>% 
+  pivot_wider(
+    names_from = condition, 
+    values_from = c(dprime, c)
+  ) %>% 
+  mutate(delta_dprime = dprime_intervention - dprime_control, 
+         delta_c = c_intervention - c_control) %>%
+  select(starts_with("delta"))
+```
+
+```{r by-hand-outcomes-experiment1}
+treatment_effects %>% 
+  rounded_numbers() %>% 
+  kable(
+    caption = "SDT treatment effects calculated by-hand for Experiment 1 of simulated data.",
+    booktabs = TRUE) %>%
+  kable_styling(font_size = 8,  # Set a smaller font size
+                latex_options = c("scale_down")) # Scale down the table
+```
+
+### b. SDT in Generalized Mixed Model (glm)
+
+To obtain test statistics for these outcomes, we can do the equivalent analysis in a generalized linear model (glm), using a probit link function. We use deviation coding for our veracity (fake = -0.5, true = 0.5) and condition (-0.5 = control, 0.5 = intervention) variables. Table \@ref(tab:glm-experiment1) shows the results of the glm.
+
+```{r}
+# run model
+model_glm <- glm(accuracy ~ veracity_numeric*condition_numeric, data = data_experiment_1, family = binomial(link = "probit"))
+
+# Tidy the model and add the SDT_term column
+model_results <- tidy(model_glm, conf.int = TRUE) %>%
+  mutate(SDT_term = case_when(
+    term == "(Intercept)" ~ "Average c (pooled across all conditions)",
+    term == "veracity_numeric" ~ "Average d' (pooled across all conditions)",
+    term == "condition_numeric" ~ "Delta c (change in -response bias between control and treatment)",
+    term == "veracity_numeric:condition_numeric" ~ " Delta d' (change in sensitivity between control and treatment)",
+    TRUE ~ "Other"
+  ), 
+  # reverse c and delta c estimates
+  SDT_estimate = ifelse(term == "(Intercept)" | term == "condition_numeric", 
+                        -1*estimate, estimate)
+  )
+
+```
+
+```{r glm-experiment1}
+# Create a table with kable
+model_results %>%
+  select(term, estimate, p.value, SDT_estimate, SDT_term) %>%
+  kable(
+    caption = "Summary of glm results for Experiment 1 of simulated data",
+    col.names = c("Term", "Estimate", "p-value", "SDT Estiamte", "SDT Term"),
+    digits = 3,
+    booktabs = TRUE
+  ) %>%
+  kable_styling(
+    full_width = FALSE, 
+    font_size = 10, 
+    latex_options = c("scale_down")
+  )
+```
+
+Due to our coding for the two independent variables, the coefficients have the following interpretation:
+
+-   `(Intercept)` = average -$c$, pooled across all conditions
+-   `veracity_numeric` = average $d'$, pooled across all conditions
+-   `condition_numeric` = -$\Delta c$, i.e. the change in -response bias between control and treatment
+-   `veracity_numeric:condition_numeric` = $\Delta d'$, i.e. the change in sensitivity between control and treatment
+
+### c. SDT in mixed models
+
+However, this analysis is naive, because it treats all observations (instances of news ratings) as independent. Yet, participants give several ratings, and news ratings from the same participant are not independent of each other.
+
+#### i. Participant averages
+
+One simple way to account for this dependency is to compute participant-level outcomes, and using these averages as observations. This way, each participant only contributes one data point. Figure \@ref(fig:individual-level-plot) shows the distributions of participants' averages for Experiment 1 of the simulated data. To obtain estimates for our treatment effects $\Delta c$ and $\Delta d'$, we can then run a linear regression with condition as a predictor (or do a t-test). The results of these regressions are shown in Table \@ref(tab:by-participant-SDT-regression).
+
+```{r}
+# calculate SDT outcomes per participant
+sdt_participants <- data_experiment_1 %>% 
+  drop_na(sdt_outcome) %>% 
+  group_by(unique_subject_id, sdt_outcome) %>%
+  count() %>%
+  ungroup() %>% 
+  # Note that currently, not all outcomes appear for participants (e.g. if a participant had only hits and false alarms, correct rejections and misses will not appear). This is a problem later, because when we compute hit and miss rates, the categories that are not appearing will be coded as NA, messing up the calculations. To avoid this, we use the complete() function and ensure that outcomes which do not occur are coded as 0. 
+  complete(
+    unique_subject_id,
+    sdt_outcome, 
+    fill = list(n = 0)
+  ) %>% 
+  # since we want the condition variable in our data, we code it back into there
+  left_join(
+    sdt_data %>% select(unique_subject_id, condition) %>% distinct()
+  ) %>%  
+  pivot_wider(names_from = sdt_outcome, 
+              values_from = n) %>% 
+  # At this point we need to correct for cases when hit rate or false alarm rate take the values of 0 (case in which qnorm(0) = -Inf) or 1 (case in which qnorm(1) = Inf). We follow Batailler in applying log-linear rule correction (Hautus, 1995)
+  mutate(
+    hit = hit + 0.5,
+    miss = miss + 0.5,
+    correct_rejection = correct_rejection + 0.5,
+    false_alarm = false_alarm + 0.5,
+  ) %>% 
+  # We can then compute sdt outcomes for each participant
+  mutate(
+    z_hit_rate = qnorm(hit / (hit + miss)),
+    z_false_alarm_rate = qnorm(false_alarm / (false_alarm + correct_rejection)),
+    dprime = z_hit_rate - z_false_alarm_rate,
+    c = -1 * (z_hit_rate + z_false_alarm_rate) / 2
+  ) %>% 
+  ungroup()
+```
+
+(ref:individual-level-plot) Distribution of participant-level averages for Experiment 1 of the simulated data. The percentage labels (from left to right) represent the share of participants with a negative score, a score of exactly 0, and a positive score, for both measures respectively. Note that when calculating by-participant averages, we follow @bataillerSignalDetectionApproach2022 in applying log-linear rule correction. This is particularly relevant for cases when the hit rate or the false alarm rate take the values of 0 (case in which qnorm(0) = -Inf) or 1 (case in which qnorm(1) = Inf).
+
+```{r individual-level-plot, fig.cap="(ref:individual-level-plot)"}
+# plot
+
+# Main plot data: shape data to long format
+plot_data <- sdt_participants %>% 
+  pivot_longer(c(dprime, c),
+               names_to = "outcome", 
+               values_to = "value") %>% 
+  # make nicer names
+  mutate(outcome = ifelse(outcome == "dprime", "D' (sensitivity)", 
+                          "C (response bias)"))
+
+# summary data for labels
+# table 
+summary_data <- plot_data %>% 
+  drop_na(value) %>% 
+  mutate(valence = ifelse(value > 0, "positive", 
+                          ifelse(value == 0, "neutral", 
+                                 "negative")
+                          )
+         ) %>% 
+  group_by(valence, outcome) %>% 
+  summarize(n_subj = n_distinct(unique_subject_id)) %>% 
+    pivot_wider(names_from = outcome, 
+              values_from = n_subj) %>% 
+  # relative frequency
+  ungroup() %>% 
+  mutate(
+    rel_dprime = `D' (sensitivity)` / sum(`D' (sensitivity)`),
+    rel_c =  `C (response bias)` / sum(`C (response bias)`)
+    ) %>% 
+  pivot_longer(c(rel_dprime, rel_c), 
+               names_to = "outcome", 
+               values_to = "value") %>% 
+  mutate(outcome = ifelse(outcome == "rel_dprime", "D' (sensitivity)", 
+                          "C (response bias)"), 
+         label = paste0(round(value, digits = 4)*100, " %"),
+         x_position = case_when(valence == "negative" ~ -1,
+                                valence == "neutral" ~ 0,
+                                valence == "positive" ~ 1), 
+         y_position = 1.5)
+
+# make plot
+individual_level_plot <- ggplot(plot_data, aes(x = value, fill = outcome, color = outcome)) +
+  geom_density(alpha = 0.5, adjust = 1.5)+
+  # add line at 0
+  geom_vline(xintercept = 0, 
+             linewidth = 0.5, linetype = "24", color = "grey") +
+  # scale
+  # scale_x_continuous(breaks = seq(from = -1, to = 1, by = 0.2)) +
+  # add labels for share of participants
+  geom_label(inherit.aes = FALSE, data = summary_data,
+             aes(x = x_position, y = y_position, 
+                 label = label),
+             alpha = 0.6,
+             color = "grey50", size = 3, show.legend = FALSE) +
+  # colors 
+  scale_color_viridis_d(option = "turbo", begin = 0.25, end = 1)+
+  scale_fill_viridis_d(option = "turbo", begin = 0.25, end = 1) +
+  # labels and scales
+  labs(x = "Z-scores", y = "Density") +
+  guides(fill = FALSE, color = FALSE) +
+  plot_theme +
+  theme(legend.position = "bottom",
+        axis.text.y = element_blank(),
+        strip.text = element_text(size = 14)) +
+  facet_wrap(~outcome)
+
+individual_level_plot
+```
+
+```{r by-participant-SDT-regression}
+model_dprime <- lm(dprime ~ condition, data = sdt_participants)
+model_c <- lm(c ~ condition, data = sdt_participants)
+
+modelsummary::modelsummary(list("d'" = model_dprime, 
+                                "c" = model_c
+                                ), 
+                           stars = TRUE,
+                           output = "kableExtra",
+                           title = "SDT outcomes based on a regression on participant-level averages",
+                           coef_rename = c("conditionintervention" = "Treatment Effect"),
+                           )
+
+```
+
+By comparing the results of the regression based on participant-level averages (Table \@ref(tab:by-participant-SDT-regression)), to the results of the glm at the rating-level and which glosses over participant dependencies (Table \@ref(tab:glm-experiment1)), we can see that the stimates for our outcomes $\Delta c$ and $\Delta d'$are slightly different. However, we can account even better for our data structure, and estimate both within and between participant variation separately by using a generalized linear mixed model (glmm).
+
+#### ii. Mixed model SDT
+
+Using a glm with probit link function as above, we can additionally specify random effects. The result is a generalized linear mixed model (glmm). Adding random effects for participants allows us to model the dependency of data points from the same participant, thereby account for these difference, while not loosing data points as in the participant-averages approach discussed above.
+
+Table \@ref(tab:glmm-experiment1) shows that, for our simulated experiment 1, the estimates of the glmm are close to, but slightly different from, the initial gml without random effects (Table \@ref(tab:glm-experiment1)).
+
+```{r, message = FALSE}
+# Sometimes these models take time, so we check that time
+time <- system.time({
+  mixed_model <- glmer(accuracy ~ veracity_numeric + condition_numeric + 
+                         veracity_numeric*condition_numeric +
+                         (1 + veracity_numeric | unique_subject_id),
+                       data = data_experiment_1, 
+                       family = binomial(link = "probit"))
+})
+
+#print(paste("Elapsed time: ", round(time[3]/60, digits = 2), " minutes"))
+
+# get a tidy version
+mixed_model <- tidy(mixed_model, conf.int = TRUE)
+```
+
+```{r glmm-experiment1}
+# show results
+mixed_model <- mixed_model %>%
+  mutate(SDT_term = case_when(
+    term == "(Intercept)" ~ "Average c (pooled across all conditions)",
+    term == "veracity_numeric" ~ "Average d' (pooled across all conditions)",
+    term == "condition_numeric" ~ "Delta c (change in -response bias between control and treatment)",
+    term == "veracity_numeric:condition_numeric" ~ " Delta d' (change in sensitivity between control and treatment)",
+    TRUE ~ "Other"
+  ), 
+  # reverse c and delta c estimates
+  SDT_estimate = ifelse(term == "(Intercept)" | term == "condition_numeric", 
+                        -1*estimate, estimate)
+  )
+
+mixed_model %>% 
+  select(-starts_with("conf")) %>% 
+  rounded_numbers() %>% 
+  select(-c(effect, group)) %>% 
+  kable(
+    caption = "Results of a generalize linear mixed model (glmm)",
+    booktabs = TRUE) %>%
+  kable_styling(font_size = 8,  # Set a smaller font size
+                latex_options = c("scale_down")) # Scale down the table
+```
