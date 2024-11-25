@@ -79,7 +79,7 @@ model_results <- tidy(model_glm, conf.int = TRUE) %>%
   mutate(SDT_term = case_when(
     term == "(Intercept)" ~ "Average c (pooled across all conditions)",
     term == "veracity_numeric" ~ "Average d' (pooled across all conditions)",
-    term == "condition_numeric" ~ "Delta c (change in -response bias between control and treatment)",
+    term == "condition_numeric" ~ "Delta c (change in response bias between control and treatment)",
     term == "veracity_numeric:condition_numeric" ~ " Delta d' (change in sensitivity between control and treatment)",
     TRUE ~ "Other"
   ), 
@@ -98,21 +98,17 @@ model_results %>%
     caption = "Summary of glm results for Experiment 1 of simulated data",
     col.names = c("Term", "Estimate", "p-value", "SDT Estiamte", "SDT Term"),
     digits = 3,
-    booktabs = TRUE
-  ) %>%
+    booktabs = TRUE) %>%
   kable_styling(
     full_width = FALSE, 
     font_size = 10, 
     latex_options = c("scale_down")
+  ) %>%
+  add_footnote(
+    "The model coefficients have the interpretations in terms of SDT as presented here in this table because we use deviation coding for our veracity (fake = -0.5, true = 0.5) and condition (-0.5 = control, 0.5 = intervention) variables.",
+    notation = "none"
   )
 ```
-
-Due to our coding for the two independent variables, the coefficients have the following interpretation:
-
--   `(Intercept)` = average -$c$, pooled across all conditions
--   `veracity_numeric` = average $d'$, pooled across all conditions
--   `condition_numeric` = -$\Delta c$, i.e. the change in -response bias between control and treatment
--   `veracity_numeric:condition_numeric` = $\Delta d'$, i.e. the change in sensitivity between control and treatment
 
 ### c. SDT in mixed models
 
@@ -228,7 +224,13 @@ individual_level_plot <- ggplot(plot_data, aes(x = value, fill = outcome, color 
         strip.text = element_text(size = 14)) +
   facet_wrap(~outcome)
 
-individual_level_plot
+#individual_level_plot
+
+# Save the plot to a file
+ggsave("individual_level_plot.png", individual_level_plot, width = 8, height = 6)
+
+# In the RMarkdown file
+knitr::include_graphics("individual_level_plot.png")
 ```
 
 ```{r by-participant-SDT-regression}

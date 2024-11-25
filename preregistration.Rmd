@@ -27,27 +27,27 @@ authornote: |
 abstract: |
   
   
-  In recent years, many studies have proposed individual-level interventions to reduce people's susceptibility for believing in misinformation. Researchers have typically evaluated the effectiveness of these interventions based on a discernment measure--how much more participants rate true news as accurate than false news. Here, we will re-assess the findings of this literature by analyzing their data using a Signal Detection Theory (SDT) framework. This allows us to differentiate between two different kinds of intervention effects: First, the effect on sensitivity, which is the ability of discriminating between true and false news that researchers typically look for. Second, the effect on response bias, which is the extent to which participants become generally more/less skeptical in their accuracy ratings for all news (whether true or false). We run an Individual Participant Data meta-analysis (IPD) based on a sample of studies that we identified via a systematic literature review following the PRISMA guidelines. We use a two-stage approach: First, we extract individual participant data and run a Signal Detection Theory analysis separately for each experiment. Second, we run a meta-analysis on the experiment-level outcomes.
+  In recent years, many studies have proposed individual-level interventions to reduce people's susceptibility for believing in misinformation. However, the results are often not directly comparable, because researchers have used different modes of evaluating the effectiveness of these interventions. Here, we will re-assess the findings of this literature in a Signal Detection Theory (SDT) framework. This allows us to differentiate between two different kinds of intervention effects: First, the effect on sensitivity, which is the ability of discriminating between true and false news that researchers typically look for. Second, the effect on response bias, which is the extent to which participants become generally more/less skeptical in their accuracy ratings for all news (whether true or false). We will run an Individual Participant Data (IPD) meta-analysis based on a sample of studies that we identified via a systematic literature review following the PRISMA guidelines. We will use a two-stage approach: First, we extract individual participant data and run a Signal Detection Theory analysis separately for each experiment. Second, we will run a meta-analysis on the experiment-level outcomes.
 keywords          : "Misinformation; fake news; false news; news judgment; news accuracy; news discernment"
 csl               : nature.csl
 floatsintext      : yes
 linenumbers       : no 
 draft             : no
-mask              : no
+mask              : yes
 figurelist        : no
 tablelist         : no
 footnotelist      : no
 classoption       : "man"
 output: 
   papaja::apa6_docx: default
-  bookdown::html_document2:
+  papaja::apa6_pdf: 
+    keep_tex: true
+  bookdown::html_document2: # when using html, enable echo = TRUE to see code chunks in output; also make sure to remove the authors for the html version, as the mask argument doesn't work
     toc: true
     toc_depth: 2
     number_sections: true
     theme: cerulean
     df_print: paged
-  papaja::apa6_pdf: 
-    keep_tex: true
 always_allow_html: true
 appendix:
   - "registration_step-by-step-SDT.Rmd"
@@ -79,7 +79,7 @@ conditional_align <- ifelse(is_docx, "default", "center")  # Word doesn't suppor
 
 # Knitr options
 knitr::opts_chunk$set(
-  echo = TRUE, warning = FALSE, message = FALSE,
+  echo = FALSE, warning = FALSE, message = FALSE,
   # tidy.opts = list(width.cutoff = 120),  # Code width
   # fig.retina = 3, dpi = conditional_dpi,
   # fig.width = 7, fig.asp = 0.618,
@@ -119,17 +119,17 @@ data <- read_csv("data/simulations/individual_level.csv")
 
 # Introduction
 
-In recent years, many studies have tested interventions designed to help people detect online misinformation. In these studies, researchers have typically evaluated the effectiveness of interventions based on a discernment measure--how much more participants rate true news as accurate than false news.
+In recent years, many studies have tested interventions designed to help people detect online misinformation. However, the results are often not directly comparable, because researchers have used different modes of evaluating the effectiveness of these interventions [@guayHowThinkWhether2023].
 
-This measure, although widely used, has been criticized recently [@guayHowThinkWhether2023; @highamMeanRatingDifference2024a; @gawronskiSignaldetectionFrameworkMisinformation2024]. For example, @modirrousta-galianGamifiedInoculationInterventions2023 re-analyzed data on gamified interventions--Bad News and Go Viral!--previously shown by researchers to increase people's news discernment. While the original studies used a discernment measure based on mean differences, @modirrousta-galianGamifiedInoculationInterventions2023 used a SDT framework. They show that the interventions have in fact not improved participant's ability to discriminate between true and false news, but have increased general skepticism, i.e. a tendency to respond 'not accurate' to all news items, including the true ones. This suggests that some interventions designed to 'inoculate' people against misinformation, might not be as effective as previously thought. They might even be counterproductive in a context where the vast majority of news people encounter are true news.
+The aim of this study re-analyze these studies in a common framework to draw new conclusions about the effectiveness of individual-level interventions designed to reduce people's susceptibility for believing in misinformation. Following a recent literature [@highamMeanRatingDifference2024a; @gawronskiSignaldetectionFrameworkMisinformation2024; @modirrousta-galianGamifiedInoculationInterventions2023; @bataillerSignalDetectionApproach2019] we will use a Signal Detection Theory (SDT) framework. This allows us to evaluate two different effects of interventions: First, the effect on sensitivity, which is the ability of discriminating between true and false news. Second, the effect on response bias, which is the extent to which participants shift their general response criterion, i.e. the extent to which they become generally more/less skeptical in their accuracy ratings for all news (regardless of whether true or false).
 
-Here, our aim is to extend this work and systematically re-evaluate misinformation interventions. We focus on all kinds of individual-level interventions designed to reduce people's susceptibility for believing in misinformation. We use Signal Detection Theory (SDT) to differentiate between two different effects of interventions: First, the effect on sensitivity, which is the ability of discriminating between true and false news that researchers typically look for. Second, the effect on response bias, which is the extent to which participants shift their general response criterion, i.e. the extent to which they become generally more/less skeptical in their accuracy ratings for all news (whether true or false). 
+```{r echo=FALSE}
+#For example, @modirrousta-galianGamifiedInoculationInterventions2023 re-analyzed data on gamified interventions--Bad News and Go Viral!--previously shown by researchers to increase people's news discernment. While the original studies only evaluated false news, @modirrousta-galianGamifiedInoculationInterventions2023 used a SDT framework that compared true and false news ratings. They show that the interventions have in fact not improved participant's ability to discriminate between true and false news, but have increased general skepticism, i.e. a tendency to respond 'not accurate' to all news items, including the true ones. This suggests that some interventions designed to 'inoculate' people against misinformation, might not be as effective as previously thought. They might even be counterproductive in a context where the vast majority of news people encounter are true news.
+```
 
 We formulate two main research questions: How do interventions against misinformation affect: (i) people's ability to discriminate between true and false news (sensitivity, or "d'", in a SDT framework; RQ1)?, and (ii) people's skepticism towards news in general (i.e. response bias, or "c", in a SDT framework; RQ2)?
 
 We will also test some moderator effects. At this stage, we know that we will ask the following questions: Do the effects of the interventions (both on sensitivity and response bias) differ between (i) different types of interventions; (ii) politically concordant and politically discordant news; (iii) different age groups? It is likely that after data collection, we will have a better overview of variables and would want to ask more moderator questions. If that is the case, we will specify these moderators in a second pre-registration before analysis.
-
-In order to compare it to our results, we will try to descriptively assess how many studies originally reported positive effects of their intervention on news discernment. At this point, it is hard to predict how comparable the orginial authors' evaluation will be with ours, e.g. due to different co-variates in the original models. If after data collection we deem it feasible, we will provide an overview for how many experiments our re-evaluation does (or does not) confirm increased sensitivity.
 
 We will do an [Individual Participant Data meta-analysis (IPD)](https://training.cochrane.org/handbook/current/chapter-26), using a two-stage approach: First, we extract individual participant data from relevant studies and run a Signal Detection Theory analysis separately for each experiment. Second, we run a meta-analysis on the outcomes.
 
@@ -259,14 +259,13 @@ sdt_data <- data %>%
          )
 ```
 
-
 The sensitivity, $d’$, measures people's capacity to discriminate between true and false news. It is defined as the difference of the standardized hit and false alarm rates
 
 $$
 d' = \Phi^{-1}(HR) - \Phi^{-1}(FAR) 
 $$
 
-where $HR$ refers to hit rate or the proportion of true news trials that participants classified--correctly--as "accurate" ($HR = \frac{N_{Hits}}{N_{Hits} + N_{Misses}}$), $FAR$ refers to false alarm rate or the proportion of false news trials that participants classified--incorrectly--as "accurate" ($HR = \frac{N_{False Alarms}}{N_{FalseAlarms} + N_{Correct Rejections}}$). $\Phi$ is the cumulative normal density function, and is used to convert z scores into probabilities. Its inverse, $\Phi^{-1}$, converts a proportion (such as a hit rate or false alarm rate) into a z score. Below, we refer to standardized hit and false alarm rates as zHR and zFAR, respectively. Due to this transformation, a proportion of .5 is converted to a z score of 0 (reflecting responses at chance). Proportions greater than .5 produce positive z scores, and proportions smaller than .5 negative ones. A positive $d'$ score indicates that people rate true news as more accurate than false news. 
+where $HR$ refers to hit rate or the proportion of true news trials that participants classified--correctly--as "accurate" ($HR = \frac{N_{Hits}}{N_{Hits} + N_{Misses}}$), $FAR$ refers to false alarm rate or the proportion of false news trials that participants classified--incorrectly--as "accurate" ($HR = \frac{N_{False Alarms}}{N_{FalseAlarms} + N_{Correct Rejections}}$). $\Phi$ is the cumulative normal density function, and is used to convert z scores into probabilities. Its inverse, $\Phi^{-1}$, converts a proportion (such as a hit rate or false alarm rate) into a z score. Below, we refer to standardized hit and false alarm rates as zHR and zFAR, respectively. Due to this transformation, a proportion of .5 is converted to a z score of 0 (reflecting responses at chance). Proportions greater than .5 produce positive z scores, and proportions smaller than .5 negative ones. A positive $d'$ score indicates that people rate true news as more accurate than false news.
 
 The response bias, $c$ can be conceived of as an overall tendency to rate items as accurate. It is defined as
 
@@ -274,7 +273,7 @@ $$
 c = -\frac{1}{2}(\text{zHR} + \text{zFAR})
 $$
 
-Note that $c$ = 0 when $zFAR = -zHR$. Because $-zHR = z(1-HR)$ is the (z-transformed) share of misses (true news rated as "not accurate"), $c$ = 0 when the false alarm rate is equal to the rate of misses (Macmillan & Creelman (2004). In other words, if people--mistakenly--rate true news as not accurate (the rate of misses) as much as they--mistakenly--rate false false news as accurate (the rate of false alarms), then there is no response bias. A positive $c$ score occurs when the miss rate (rating true news news as false) is larger than the false alarm rate (rating false news as true). In other words, a positive $c$ score indicates that people were more skeptical towards true news than they were gullible towards false news. We refer to this as an overall tendency towards skepticism. 
+Note that $c$ = 0 when $zFAR = -zHR$. Because $-zHR = z(1-HR)$ is the (z-transformed) share of misses (true news rated as "not accurate"), $c$ = 0 when the false alarm rate is equal to the rate of misses (Macmillan & Creelman (2004). In other words, if people--mistakenly--rate true news as not accurate (the rate of misses) as much as they--mistakenly--rate false false news as accurate (the rate of false alarms), then there is no response bias. A positive $c$ score occurs when the miss rate (rating true news news as false) is larger than the false alarm rate (rating false news as true). In other words, a positive $c$ score indicates that people were more skeptical towards true news than they were gullible towards false news. We refer to this as an overall tendency towards skepticism.
 
 Our outcome of interest is the intervention effects on $d'$ ("d prime", sensitivity) and $c$ (response bias). Since these outcomes are about the difference between the control and the treatment group, we call them "Delta". Specifically, they are defined as:
 
@@ -288,11 +287,11 @@ $$
 \Delta c = c_{treatment} - c_{control}.
 $$
 
-A positive $\Delta d'$ score indicates that the intervention increased participants' ability to discriminate between true and false news compared to the control group. A positive $\Delta c$ score indicates that the intervention led to a greater tendency towards skepticism, meaning participants were more likely to rate items as "not accurate" regardless of veracity, compared to the control group. 
+A positive $\Delta d'$ score indicates that the intervention increased participants' ability to discriminate between true and false news compared to the control group. A positive $\Delta c$ score indicates that the intervention led to a greater tendency towards skepticism, meaning participants were more likely to rate items as "not accurate" regardless of veracity, compared to the control group.
 
 ### Variables
 
-Table \@ref(tab:codebook) contains a list of variables we will collect. We might not be able to collect all variables for all studies. For political concordance, e.g., this will certainly not be the case. 
+Table \@ref(tab:codebook) contains a list of variables we will collect. We might not be able to collect all variables for all studies. For political concordance, e.g., this will certainly not be the case.
 
 ```{r codebook}
 # Create the codebook data frame
@@ -300,6 +299,7 @@ codebook <- data.frame(
   Variable_Name = c(
     "paper_id", "experiment_id", "subject_id", "country", "year", 
     "veracity", "condition", "intervention_label", "intervention_description", 
+    "intervention_selection",
     "accuracy_raw", "scale", "originally_identified_treatment_effect", 
     "concordance", "age", "identified_via", "id", 
     "unique_experiment_id", "accuracy"
@@ -314,6 +314,7 @@ codebook <- data.frame(
     "Treatment vs. control",
     "A label for what the intervention consisted of",
     "A detailed description of the intervention",
+    "If multiple interventions tested within a single experiment (and related to a single control group), reasoning as to which intervention to select",
     "Participants' accuracy ratings on the scale used in the original study",
     "The scale used in the original study",
     "Whether the authors identified a significant treatment effect (`FALSE` if no, `TRUE` if yes)",
@@ -343,7 +344,7 @@ Building a comparable accuracy measure that we can analyze in the SDT framework 
 
 ### Main Analysis
 
-We will run a participant-level meta analysis using a two-stage approach: First, for each experiment, we calculate a generalized linear mixed model (glmm) that yields SDT outcomes. The resulting estimates are our effect sizes. Second, we run a meta analysis on these effect sizes. In Appendix \@ref(step-by-step) to this registration, we explain step by step how to go from a by-hand SDT analysis to a glmm SDT analysis. In the following, we will outline the analysis steps we will perform. 
+We will run a participant-level meta analysis using a two-stage approach: First, for each experiment, we calculate a generalized linear mixed model (glmm) that yields SDT outcomes. The resulting estimates are our effect sizes. Second, we run a meta analysis on these effect sizes. In Appendix \@ref(step-by-step) to this registration, we explain step by step how to go from a by-hand SDT analysis to a glmm SDT analysis. In the following, we will outline the analysis steps we will perform.
 
 #### Stage 1: experiment-level analysis
 
@@ -431,7 +432,7 @@ run_loop(data, filename)
 model_results <- read_csv(filename)
 ```
 
-We code our binary independent variables, veracity and condition, using deviation coding (i.e. for veracity, false = -0.5, true = 0.5; for condition, control = -0.5, treatment = 0.5). Using deviation coding, the main effect model output terms translate to SDT outcomes as follows: 
+We code our binary independent variables, veracity and condition, using deviation coding (i.e. for veracity, false = -0.5, true = 0.5; for condition, control = -0.5, treatment = 0.5). Using deviation coding, the main effect model output terms translate to SDT outcomes as follows:
 
 -   `(Intercept)` = average -$c$, pooled across all conditions
 -   `veracity_numeric` = average $d'$, pooled across all conditions
@@ -459,7 +460,6 @@ model_results <- model_results %>%
   ) 
 ```
 
-
 ```{r example-outcome-exp1}
 model_results %>% 
   filter(unique_experiment_id == "1_1") %>% 
@@ -473,10 +473,9 @@ model_results %>%
                 latex_options = c("scale_down")) # Scale down the table
 ```
 
+As shown in Figure \@ref(fig:distributions), we can then plot the distributions of our outcome estimates of interest, across experiments.
 
-As shown in Figure \@ref(fig:distributions), we can then plot the distributions of our outcome estimates of interest, across experiments. 
-
-(ref:distributions) Distributions of Signal Detection Theory outcomes across experiments. Note that these distributions are purely descriptive - effect sizes are not weighted by sample size of the respective experiment, as they are in the meta-analysis. 
+(ref:distributions) Distributions of Signal Detection Theory outcomes across experiments. Note that these distributions are purely descriptive - effect sizes are not weighted by sample size of the respective experiment, as they are in the meta-analysis.
 
 ```{r distributions, fig.cap="(ref:distributions)"}
 # make plot
@@ -494,7 +493,9 @@ ggplot(model_results, aes(x = estimate, fill = SDT_term)) +
 
 #### Stage 2: Meta-analysis
 
-Next, we run a meta analysis on these effect size estimates at the experiment-level. In our models for the meta analysis, each effect size is weighted by the inverse of its standard error, thereby giving more weight to experiments with larger sample sizes. We will use random effects models, which assume that there is not only one true effect size but a distribution of true effect sizes. We will use a multi-level meta-analytic model, with random effects at the publication and the experiment level. This approach allows us to account for the hierarchical structure of our data, in which (at least some) papers (level three) contribute several effect sizes from different experiments (level two)^[Level 1 being the the participant level, i.e. the sampling variation of the original studies, see @harrer2021.]. However, the multi-level models do not account for dependencies in sampling error. When one paper contributes several effect sizes, one might expect their respective sampling errors to be correlated. To account for dependency in sampling errors, we compute cluster-robust standard errors, confidence intervals, and statistical tests for all meta-analytic estimates. For our simulated data, Table \@ref(tab:meta-model-results) shows the results of the meta-analytic models and Figure \@ref(fig:forest) provides an overview of effect sizes for each experiment as a forest plot. 
+Next, we run a meta analysis on these effect size estimates at the experiment-level. In our models for the meta analysis, each effect size is weighted by the inverse of its standard error, thereby giving more weight to experiments with larger sample sizes. We will use random effects models, which assume that there is not only one true effect size but a distribution of true effect sizes. We will use a multi-level meta-analytic model, with random effects at the publication and the experiment level. This approach allows us to account for the hierarchical structure of our data, in which (at least some) papers (level three) contribute several effect sizes from different experiments (level two)[^1]. However, the multi-level models do not account for dependencies in sampling error. When one paper contributes several effect sizes, one might expect their respective sampling errors to be correlated. To account for dependency in sampling errors, we compute cluster-robust standard errors, confidence intervals, and statistical tests for all meta-analytic estimates. For our simulated data, Table \@ref(tab:meta-model-results) shows the results of the meta-analytic models and Figure \@ref(fig:forest) provides an overview of effect sizes for each experiment as a forest plot.
+
+[^1]: Level 1 being the the participant level, i.e. the sampling variation of the original studies, see @harrer2021.
 
 ```{r}
 # Function to calculate meta models
@@ -602,7 +603,7 @@ We distinguish between two broad kinds of moderator variables: those that vary w
 
 #### a. within-experiment variables
 
-There are two moderator variables that vary within-experiments that we will test: age and political concordance. Age varies within experiments, but between participants (each participant can only have one age). Political concordance varies not only within experiments, and also within participants--in the typical experiment design, each participant is shown both concordant and discordant items. In the text, we will focus on political concordance, which requires slightly more complex modelling, but provide the models for age in the respective code chunks. 
+There are two moderator variables that vary within-experiments that we will test: age and political concordance. Age varies within experiments, but between participants (each participant can only have one age). Political concordance varies not only within experiments, and also within participants--in the typical experiment design, each participant is shown both concordant and discordant items. In the text, we will focus on political concordance, which requires slightly more complex modelling, but provide the models for age in the respective code chunks.
 
 We have two options: (i) integrating political concordance in our baseline model. While this would be the straightforward thing to do, it involves a three-way interaction with many random effects and will likely bring up convergence issues; (ii) run our baseline model separately for concordant and discordant items. Then, proceed just as for between-experiment moderators.
 
@@ -753,7 +754,7 @@ sdt_outcomes %>%
 
 ```
 
-Based on this data, we can calculate the average response bias (`(Intercept)`) and sensitivity (`veracity_numeric`), pooled across all conditions; our treatment effects `delta_dprime` (`veracity_numeric:condition_numeric` in the model output) and `delta_c` (`condition_numeric` in the model output) from before, i.e. ignoring/pooling across political concordance; the differences in response bias (`concordance_numeric` in the model output) and sensitivity (`veracity_numeric:concordance_numeric` in the model output) between concordant and discordant items, pooling across control and treatment groups; the moderator effect of convergence on our original treatment effects `delta_dprime` and `delta_c`, i.e. how much stronger/weaker the effects on response bias (`condition_numeric:concordance_numeric` in the model output) and sensitivity (`veracity_numeric:condition_numeric:concordance_numeric` in the model output) are for concordant items, compared to discordant ones. Table \@ref(tab:moderator-SDT-by-hand) shows the results of these by-hand calculations. Comparing the results from the by-hand calculation (Table \@ref(tab:moderator-SDT-by-hand)) and the glm (Table \@ref(tab:glm-example-experiment1)), we note that the results are the same. 
+Based on this data, we can calculate the average response bias (`(Intercept)`) and sensitivity (`veracity_numeric`), pooled across all conditions; our treatment effects `delta_dprime` (`veracity_numeric:condition_numeric` in the model output) and `delta_c` (`condition_numeric` in the model output) from before, i.e. ignoring/pooling across political concordance; the differences in response bias (`concordance_numeric` in the model output) and sensitivity (`veracity_numeric:concordance_numeric` in the model output) between concordant and discordant items, pooling across control and treatment groups; the moderator effect of convergence on our original treatment effects `delta_dprime` and `delta_c`, i.e. how much stronger/weaker the effects on response bias (`condition_numeric:concordance_numeric` in the model output) and sensitivity (`veracity_numeric:condition_numeric:concordance_numeric` in the model output) are for concordant items, compared to discordant ones. Table \@ref(tab:moderator-SDT-by-hand) shows the results of these by-hand calculations. Comparing the results from the by-hand calculation (Table \@ref(tab:moderator-SDT-by-hand)) and the glm (Table \@ref(tab:glm-example-experiment1)), we note that the results are the same.
 
 ```{r calculate-moderator-SDT-by-hand}
 # average dprime and c
@@ -1026,11 +1027,9 @@ modelsummary::modelsummary(list("Delta d'" = concordance_delta_dprime,
                            )
 ```
 
-
 #### b. Between-experiment variables
 
-The main between-experiment variable we will look at here is interventions type. In our simulated data, we made up three intervention types ("literacy tips", "priming", "warning labels"). We run a meta-regression, in which we add intervention type as a covariate to the meta-analytic model from the main analysis. The results of this analaysis in our simulated data--where no true moderator effect was modeled--can be found in Table \@ref(tab:intervention-type-moderator). 
-
+The main between-experiment variable we will look at here is interventions type. In our simulated data, we made up three intervention types ("literacy tips", "priming", "warning labels"). We run a meta-regression, in which we add intervention type as a covariate to the meta-analytic model from the main analysis. The results of this analaysis in our simulated data--where no true moderator effect was modeled--can be found in Table \@ref(tab:intervention-type-moderator).
 
 ```{r}
 # we add the intervention types to the effect sizes data frame with the SDT outcomes
@@ -1100,14 +1099,13 @@ modelsummary::modelsummary(list("Delta d'" = interventiontype_delta_dprime,
                            )
 ```
 
-
 ## Sensitivity Analysis
 
 ```{r}
 sensitivity_data <- read_csv("data/simulations/sensitivity_analysis.csv")
 ```
 
-Since we are running a meta-analysis based on a systematic review, we cannot control the final sample size. To have rough estimate on the statistical power we anticipate our study to have, we ran a sensitivity analysis based on a simulation. For the simulation, we--conservatively--assumed that the meta-analysis sample will consist of 10 papers. We assumed that each paper has between 1 and 4 experiments, and each experiment can have between two and four experimental arms (one of which is always the control condition). For each experimental arm, we assumed a sample size of 100 participants. The number of experiments per paper and arms per experiments was chosen randomly for each study. We further assumed that participants always saw 5 true and 5 false news. For details about other parameter assumptions, see the parameter list specified above. Although our final sample of papers will probably have properties quite different from what we assumed here, we believe these assumptions are rather conservative. 
+Since we are running a meta-analysis based on a systematic review, we cannot control the final sample size. To have rough estimate on the statistical power we anticipate our study to have, we ran a sensitivity analysis based on a simulation. For the simulation, we--conservatively--assumed that the meta-analysis sample will consist of 10 papers. We assumed that each paper has between 1 and 4 experiments, and each experiment can have between two and four experimental arms (one of which is always the control condition). For each experimental arm, we assumed a sample size of 100 participants. The number of experiments per paper and arms per experiments was chosen randomly for each study. We further assumed that participants always saw 5 true and 5 false news. For details about other parameter assumptions, see the parameter list specified above. Although our final sample of papers will probably have properties quite different from what we assumed here, we believe these assumptions are rather conservative.
 
 In our simulations, we varied the values (small = 0.2, medium = 0.5, large = 0.8) for the true effect sizes for d' and c in the data. For each combination of the two effect sizes, we run 100 iterations, i.e. 100 times we generate a different sample of 10 papers, and run our meta-analysis on that sample. The aim of the sensitivity analysis consists in checking how many of these 100 meta-analyses find a significant effect. The share of analyses that detect the true effect is the statistical power.
 
@@ -1160,13 +1158,13 @@ ggplot(plot_data,
 
 ## Parameter Recovery
 
-Instead of only checking whether our models find a significant effect or not, we also descriptively check how well our model recovers the data generating parameters accros the different samples. 
+Instead of only checking whether our models find a significant effect or not, we also descriptively check how well our model recovers the data generating parameters accros the different samples.
 
-As shown in Figure \@ref(fig:sensitivity-parameter-dprime) for d' and Figure \@ref(fig:sensitivity-parameter-c) for c, we find that the distributions of meta-analytic estimates across the 100 samples per pair of effect sizes are centered around the true data generating parameter when the effect size is small (0.2). With an increasing true effect size, however, the estiamte distributions tend to be shifted to the left of the parameter, which suggests that our models consistently underestimate the true effect. 
+As shown in Figure \@ref(fig:sensitivity-parameter-dprime) for d' and Figure \@ref(fig:sensitivity-parameter-c) for c, we find that the distributions of meta-analytic estimates across the 100 samples per pair of effect sizes are centered around the true data generating parameter when the effect size is small (0.2). With an increasing true effect size, however, the estiamte distributions tend to be shifted to the left of the parameter, which suggests that our models consistently underestimate the true effect.
 
 Overall, our simulation suggests that (i) given conservative sample size assumptions, we will have large enough statistical power to detect even small effects, and (ii) that our model might slightly underestimates true effect sizes, which makes it a conservative estimator.
 
-(ref:sensitivity-parameter-dprime) Distributions of Delta d' across simulated meta-analyses. The plot shows the distribution of meta-analytic estimates, for each combination of Delta d' and Delta c values. 
+(ref:sensitivity-parameter-dprime) Distributions of Delta d' across simulated meta-analyses. The plot shows the distribution of meta-analytic estimates, for each combination of Delta d' and Delta c values.
 
 ```{r sensitivity-parameter-dprime, fig.cap="(ref:sensitivity-parameter-dprime)"}
 # custom function for grid labels
@@ -1184,7 +1182,7 @@ ggplot(sensitivity_data %>% filter(term == "delta d'"), aes(x = estimate)) +
     labeller = custom_labeller)
 ```
 
-(ref:sensitivity-parameter-c) Distributions of Delta c across simulated meta-analyses. The plot shows the distribution of meta-analytic estimates, for each combination of Delta c and Delta d' values. 
+(ref:sensitivity-parameter-c) Distributions of Delta c across simulated meta-analyses. The plot shows the distribution of meta-analytic estimates, for each combination of Delta c and Delta d' values.
 
 ```{r sensitivity-parameter-c, fig.cap="(ref:sensitivity-parameter-c)"}
 ggplot(sensitivity_data %>% filter(term == "delta c"), aes(x = estimate)) +
@@ -1197,8 +1195,11 @@ ggplot(sensitivity_data %>% filter(term == "delta c"), aes(x = estimate)) +
 
 # Data availability
 
+All data is available on the OSF project page or on github (https://github.com/janpfander/meta_interventions_news). 
+
 # Code availability
 
+All code is available on the OSF project page or on github (https://github.com/janpfander/meta_interventions_news). 
 
 \FloatBarrier
 
@@ -1207,11 +1208,9 @@ ggplot(sensitivity_data %>% filter(term == "delta c"), aes(x = estimate)) +
 ::: {#refs}
 :::
 
-
 \newpage
 
-# (APPENDIX) Appendix {-}
+# (APPENDIX) Appendix {.unnumbered}
 
 ```{r child = "registration_step-by-step-SDT.Rmd"}
 ```
-

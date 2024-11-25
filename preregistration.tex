@@ -3,7 +3,7 @@
 \PassOptionsToPackage{hyphens}{url}
 %
 \documentclass[
-  man,floatsintext]{apa6}
+  man,mask,floatsintext]{apa6}
 \usepackage{amsmath,amssymb}
 \usepackage{iftex}
 \ifPDFTeX
@@ -197,7 +197,6 @@
 \urlstyle{same}
 \hypersetup{
   pdftitle={How effective are interventions designed to help people detect misinformation? A Pre-data Collection Registration},
-  pdfauthor={Jan Pfänder1 \& Sacha Altay2},
   pdflang={en-EN},
   pdfkeywords={Misinformation; fake news; false news; news judgment; news accuracy; news discernment},
   hidelinks,
@@ -223,7 +222,7 @@ Correspondence concerning this article should be addressed to Sacha Altay, . E-m
 \affiliation{\vspace{0.5cm}\textsuperscript{1} Institut Jean Nicod, Département d'études cognitives, ENS, EHESS, PSL University, CNRS, France\\\textsuperscript{2} Department of Political Science, University of Zurich, Switzerland}
 
 \abstract{%
-In recent years, many studies have proposed individual-level interventions to reduce people's susceptibility for believing in misinformation. Researchers have typically evaluated the effectiveness of these interventions based on a discernment measure--how much more participants rate true news as accurate than false news. Here, we will re-assess the findings of this literature by analyzing their data using a Signal Detection Theory (SDT) framework. This allows us to differentiate between two different kinds of intervention effects: First, the effect on sensitivity, which is the ability of discriminating between true and false news that researchers typically look for. Second, the effect on response bias, which is the extent to which participants become generally more/less skeptical in their accuracy ratings for all news (whether true or false). We run an Individual Participant Data meta-analysis (IPD) based on a sample of studies that we identified via a systematic literature review following the PRISMA guidelines. We use a two-stage approach: First, we extract individual participant data and run a Signal Detection Theory analysis separately for each experiment. Second, we run a meta-analysis on the experiment-level outcomes.
+In recent years, many studies have proposed individual-level interventions to reduce people's susceptibility for believing in misinformation. However, the results are often not directly comparable, because researchers have used different modes of evaluating the effectiveness of these interventions. Here, we will re-assess the findings of this literature in a Signal Detection Theory (SDT) framework. This allows us to differentiate between two different kinds of intervention effects: First, the effect on sensitivity, which is the ability of discriminating between true and false news that researchers typically look for. Second, the effect on response bias, which is the extent to which participants become generally more/less skeptical in their accuracy ratings for all news (whether true or false). We will run an Individual Participant Data (IPD) meta-analysis based on a sample of studies that we identified via a systematic literature review following the PRISMA guidelines. We will use a two-stage approach: First, we extract individual participant data and run a Signal Detection Theory analysis separately for each experiment. Second, we will run a meta-analysis on the experiment-level outcomes.
 }
 
 
@@ -233,17 +232,13 @@ In recent years, many studies have proposed individual-level interventions to re
 
 \section{Introduction}\label{introduction}
 
-In recent years, many studies have tested interventions designed to help people detect online misinformation. In these studies, researchers have typically evaluated the effectiveness of interventions based on a discernment measure--how much more participants rate true news as accurate than false news.
+In recent years, many studies have tested interventions designed to help people detect online misinformation. However, the results are often not directly comparable, because researchers have used different modes of evaluating the effectiveness of these interventions\textsuperscript{1}.
 
-This measure, although widely used, has been criticized recently\textsuperscript{1--3}. For example,\textsuperscript{4} re-analyzed data on gamified interventions--Bad News and Go Viral!--previously shown by researchers to increase people's news discernment. While the original studies used a discernment measure based on mean differences,\textsuperscript{4} used a SDT framework. They show that the interventions have in fact not improved participant's ability to discriminate between true and false news, but have increased general skepticism, i.e.~a tendency to respond `not accurate' to all news items, including the true ones. This suggests that some interventions designed to `inoculate' people against misinformation, might not be as effective as previously thought. They might even be counterproductive in a context where the vast majority of news people encounter are true news.
-
-Here, our aim is to extend this work and systematically re-evaluate misinformation interventions. We focus on all kinds of individual-level interventions designed to reduce people's susceptibility for believing in misinformation. We use Signal Detection Theory (SDT) to differentiate between two different effects of interventions: First, the effect on sensitivity, which is the ability of discriminating between true and false news that researchers typically look for. Second, the effect on response bias, which is the extent to which participants shift their general response criterion, i.e.~the extent to which they become generally more/less skeptical in their accuracy ratings for all news (whether true or false).
+The aim of this study re-analyze these studies in a common framework to draw new conclusions about the effectiveness of individual-level interventions designed to reduce people's susceptibility for believing in misinformation. Following a recent literature\textsuperscript{2--5} we will use a Signal Detection Theory (SDT) framework. This allows us to evaluate two different effects of interventions: First, the effect on sensitivity, which is the ability of discriminating between true and false news. Second, the effect on response bias, which is the extent to which participants shift their general response criterion, i.e.~the extent to which they become generally more/less skeptical in their accuracy ratings for all news (regardless of whether true or false).
 
 We formulate two main research questions: How do interventions against misinformation affect: (i) people's ability to discriminate between true and false news (sensitivity, or ``d''', in a SDT framework; RQ1)?, and (ii) people's skepticism towards news in general (i.e.~response bias, or ``c'', in a SDT framework; RQ2)?
 
 We will also test some moderator effects. At this stage, we know that we will ask the following questions: Do the effects of the interventions (both on sensitivity and response bias) differ between (i) different types of interventions; (ii) politically concordant and politically discordant news; (iii) different age groups? It is likely that after data collection, we will have a better overview of variables and would want to ask more moderator questions. If that is the case, we will specify these moderators in a second pre-registration before analysis.
-
-In order to compare it to our results, we will try to descriptively assess how many studies originally reported positive effects of their intervention on news discernment. At this point, it is hard to predict how comparable the orginial authors' evaluation will be with ours, e.g.~due to different co-variates in the original models. If after data collection we deem it feasible, we will provide an overview for how many experiments our re-evaluation does (or does not) confirm increased sensitivity.
 
 We will do an \href{https://training.cochrane.org/handbook/current/chapter-26}{Individual Participant Data meta-analysis (IPD)}, using a two-stage approach: First, we extract individual participant data from relevant studies and run a Signal Detection Theory analysis separately for each experiment. Second, we run a meta-analysis on the outcomes.
 
@@ -253,15 +248,15 @@ We will do an \href{https://training.cochrane.org/handbook/current/chapter-26}{I
 
 \subsubsection{Systematic Literature review}\label{systematic-literature-review}
 
-We will base ourselves on the systematic literature review of a recent meta-analysis on people's accuracy judgments of true and false news\textsuperscript{5}. Of all the studies extracted from this review, we will reduce our sample to those that tested an intervention to augment news discernment.
+We will base ourselves on the systematic literature review of a recent meta-analysis on people's accuracy judgments of true and false news\textsuperscript{6}. Of all the studies extracted from this review, we will reduce our sample to those that tested an intervention to augment news discernment.
 
-Since the field is rapidly growing, we will also try to add papers that have been published since the systematic review. We will code for all papers whether they were part of the original systematic review of\textsuperscript{5} or identified afterwards, so that the selection process is transparent. In a second pre-registration--after data collection but before analysis--we will publish a full list of studies, detailing whether they were part of the systematic review or added afterwards by us because we came across them.
+Since the field is rapidly growing, we will also try to add papers that have been published since the systematic review. We will code for all papers whether they were part of the original systematic review of\textsuperscript{6} or identified afterwards, so that the selection process is transparent. In a second pre-registration--after data collection but before analysis--we will publish a full list of studies, detailing whether they were part of the systematic review or added afterwards by us because we came across them.
 
-We have already stored individual level data for several studies used in\textsuperscript{5}. We have yet to collect data for the remaining studies. For the studies that we have already stored individual-level data, we have not yet cleaned it according to the requirements of the study proposed here. We have not performed any of the here suggested analysis on the collected data. We have simulated data to be clear on the data structure our analysis requires and to test how well our model performs in recovering parameters. All analyses presented in this pre-registration use this simulated data.
+We have already stored individual level data for several studies used in\textsuperscript{6}. We have yet to collect data for the remaining studies. For the studies that we have already stored individual-level data, we have not yet cleaned it according to the requirements of the study proposed here. We have not performed any of the here suggested analysis on the collected data. We have simulated data to be clear on the data structure our analysis requires and to test how well our model performs in recovering parameters. All analyses presented in this pre-registration use this simulated data.
 
 \subsubsection{Selecting Interventions}\label{selecting-interventions}
 
-Sometimes, within the same experiment, researchers test different interventions, by comparing it to a single control group. For a meta-analysis, this is a problem, \href{https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/effects.html\#unit-of-analysis}{sometimes referred to as double-counting}. The correlations due to the same comparison group cannot be accounted for by a meta-analytic model\textsuperscript{6}. Following options recommended in the \href{https://training.cochrane.org/handbook/current/chapter-23\#section-23-3}{cochrane manual} we use the following rule of thumb: If the interventions are conceptually similar enough, pool the interventions together. If they are too dissimilar, pick the most pertinent one.
+Sometimes, within the same experiment, researchers test different interventions, by comparing it to a single control group. For a meta-analysis, this is a problem, \href{https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/effects.html\#unit-of-analysis}{sometimes referred to as double-counting}. The correlations due to the same comparison group cannot be accounted for by a meta-analytic model\textsuperscript{7}. Following options recommended in the \href{https://training.cochrane.org/handbook/current/chapter-23\#section-23-3}{cochrane manual} we use the following rule of thumb: If the interventions are conceptually similar enough, pool the interventions together. If they are too dissimilar, pick the most pertinent one.
 
 It is hard to predict in advance how relevant these decisions will be. However, we will make them on a purely theoretical basis: Once we have collected our data, we will make an overview of all interventions, and make a decision in case of multiple intervention arms within the same experiment. We will preregister these decisions as part of the second pre-registration. Only then will we run the analysis.
 
@@ -326,7 +321,7 @@ We will then have to make specific exclusion decisions for each experiment.
 
 \begin{table}
 \centering
-\caption{\label{tab:unnamed-chunk-2}Example of exclusion decisions for some of the experiments with multiple intervention arms}
+\caption{\label{tab:unnamed-chunk-3}Example of exclusion decisions for some of the experiments with multiple intervention arms}
 \centering
 \fontsize{10}{12}\selectfont
 \begin{tabular}[t]{ll}
@@ -439,14 +434,15 @@ Table \ref{tab:codebook} contains a list of variables we will collect. We might 
 \textbf{condition} & Treatment vs. control\\
 \textbf{intervention\_label} & A label for what the intervention consisted of\\
 \textbf{intervention\_description} & A detailed description of the intervention\\
-\textbf{accuracy\_raw} & Participants' accuracy ratings on the scale used in the original study\\
+\textbf{intervention\_selection} & If multiple interventions tested within a single experiment (and related to a single control group), reasoning as to which intervention to select\\
 \addlinespace
+\textbf{accuracy\_raw} & Participants' accuracy ratings on the scale used in the original study\\
 \textbf{scale} & The scale used in the original study\\
 \textbf{originally\_identified\_treatment\_effect} & Whether the authors identified a significant treatment effect (`FALSE` if no, `TRUE` if yes)\\
 \textbf{concordance} & Political concordance of news items (concordant or discordant)\\
 \textbf{age} & Participant age\\
-\textbf{identified\_via} & Indicates if a paper was identified by the systematic review or added after\\
 \addlinespace
+\textbf{identified\_via} & Indicates if a paper was identified by the systematic review or added after\\
 \textbf{id} & Unique participant ID (merged `paper\_id`, `experiment\_id`, `subject\_id`)\\
 \textbf{unique\_experiment\_id} & Unique experiment ID (merged `paper\_id` and `experiment\_id`)\\
 \textbf{accuracy} & Binary version of `accuracy\_raw`; unchanged if originally binary\\*
@@ -509,7 +505,7 @@ As shown in Figure \ref{fig:distributions}, we can then plot the distributions o
 
 \paragraph{Stage 2: Meta-analysis}\label{stage-2-meta-analysis}
 
-Next, we run a meta analysis on these effect size estimates at the experiment-level. In our models for the meta analysis, each effect size is weighted by the inverse of its standard error, thereby giving more weight to experiments with larger sample sizes. We will use random effects models, which assume that there is not only one true effect size but a distribution of true effect sizes. We will use a multi-level meta-analytic model, with random effects at the publication and the experiment level. This approach allows us to account for the hierarchical structure of our data, in which (at least some) papers (level three) contribute several effect sizes from different experiments (level two)\footnote{Level 1 being the the participant level, i.e.~the sampling variation of the original studies, see\textsuperscript{6}.}. However, the multi-level models do not account for dependencies in sampling error. When one paper contributes several effect sizes, one might expect their respective sampling errors to be correlated. To account for dependency in sampling errors, we compute cluster-robust standard errors, confidence intervals, and statistical tests for all meta-analytic estimates. For our simulated data, Table \ref{tab:meta-model-results} shows the results of the meta-analytic models and Figure \ref{fig:forest} provides an overview of effect sizes for each experiment as a forest plot.
+Next, we run a meta analysis on these effect size estimates at the experiment-level. In our models for the meta analysis, each effect size is weighted by the inverse of its standard error, thereby giving more weight to experiments with larger sample sizes. We will use random effects models, which assume that there is not only one true effect size but a distribution of true effect sizes. We will use a multi-level meta-analytic model, with random effects at the publication and the experiment level. This approach allows us to account for the hierarchical structure of our data, in which (at least some) papers (level three) contribute several effect sizes from different experiments (level two)\footnote{Level 1 being the the participant level, i.e.~the sampling variation of the original studies, see\textsuperscript{7}.}. However, the multi-level models do not account for dependencies in sampling error. When one paper contributes several effect sizes, one might expect their respective sampling errors to be correlated. To account for dependency in sampling errors, we compute cluster-robust standard errors, confidence intervals, and statistical tests for all meta-analytic estimates. For our simulated data, Table \ref{tab:meta-model-results} shows the results of the meta-analytic models and Figure \ref{fig:forest} provides an overview of effect sizes for each experiment as a forest plot.
 
 \begin{table}
 \centering
@@ -564,22 +560,22 @@ Table \ref{tab:glmm-example-experiment1} illustrates the model output for the fi
 \toprule
 term & estimate & std.error & statistic & p.value & conf.low & conf.high & time\_minutes\\
 \midrule
-(Intercept) & -0.510 & 0.033 & -15.511 & 0.000 & -0.574 & -0.445 & 0.05\\
-veracity\_numeric & 0.808 & 0.063 & 12.740 & 0.000 & 0.684 & 0.933 & 0.05\\
-condition\_numeric & -0.112 & 0.065 & -1.723 & 0.085 & -0.239 & 0.015 & 0.05\\
-concordance\_numeric & -0.095 & 0.063 & -1.504 & 0.133 & -0.219 & 0.029 & 0.05\\
-veracity\_numeric:condition\_numeric & -0.287 & 0.126 & -2.283 & 0.022 & -0.534 & -0.041 & 0.05\\
+(Intercept) & -0.510 & 0.033 & -15.511 & 0.000 & -0.574 & -0.445 & 0.09\\
+veracity\_numeric & 0.808 & 0.063 & 12.740 & 0.000 & 0.684 & 0.933 & 0.09\\
+condition\_numeric & -0.112 & 0.065 & -1.723 & 0.085 & -0.239 & 0.015 & 0.09\\
+concordance\_numeric & -0.095 & 0.063 & -1.504 & 0.133 & -0.219 & 0.029 & 0.09\\
+veracity\_numeric:condition\_numeric & -0.287 & 0.126 & -2.283 & 0.022 & -0.534 & -0.041 & 0.09\\
 \addlinespace
-veracity\_numeric:concordance\_numeric & -0.181 & 0.129 & -1.400 & 0.161 & -0.435 & 0.072 & 0.05\\
-condition\_numeric:concordance\_numeric & -0.009 & 0.125 & -0.074 & 0.941 & -0.255 & 0.236 & 0.05\\
-veracity\_numeric:condition\_numeric:concordance\_numeric & -0.197 & 0.255 & -0.770 & 0.441 & -0.697 & 0.304 & 0.05\\
-sd\_\_(Intercept) & 0.119 &  &  &  &  &  & 0.05\\
-cor\_\_(Intercept).veracity\_numeric & 1.000 &  &  &  &  &  & 0.05\\
+veracity\_numeric:concordance\_numeric & -0.181 & 0.129 & -1.400 & 0.161 & -0.435 & 0.072 & 0.09\\
+condition\_numeric:concordance\_numeric & -0.009 & 0.125 & -0.074 & 0.941 & -0.255 & 0.236 & 0.09\\
+veracity\_numeric:condition\_numeric:concordance\_numeric & -0.197 & 0.255 & -0.770 & 0.441 & -0.697 & 0.304 & 0.09\\
+sd\_\_(Intercept) & 0.119 &  &  &  &  &  & 0.09\\
+cor\_\_(Intercept).veracity\_numeric & 1.000 &  &  &  &  &  & 0.09\\
 \addlinespace
-cor\_\_(Intercept).veracity\_numeric:concordance\_numeric & 1.000 &  &  &  &  &  & 0.05\\
-sd\_\_veracity\_numeric & 0.085 &  &  &  &  &  & 0.05\\
-cor\_\_veracity\_numeric.veracity\_numeric:concordance\_numeric & 1.000 &  &  &  &  &  & 0.05\\
-sd\_\_veracity\_numeric:concordance\_numeric & 0.342 &  &  &  &  &  & 0.05\\
+cor\_\_(Intercept).veracity\_numeric:concordance\_numeric & 1.000 &  &  &  &  &  & 0.09\\
+sd\_\_veracity\_numeric & 0.085 &  &  &  &  &  & 0.09\\
+cor\_\_veracity\_numeric.veracity\_numeric:concordance\_numeric & 1.000 &  &  &  &  &  & 0.09\\
+sd\_\_veracity\_numeric:concordance\_numeric & 0.342 &  &  &  &  &  & 0.09\\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -811,7 +807,11 @@ Overall, our simulation suggests that (i) given conservative sample size assumpt
 
 \section{Data availability}\label{data-availability}
 
+All data is available on the OSF project page or on github (\url{https://github.com/janpfander/meta_interventions_news}).
+
 \section{Code availability}\label{code-availability}
+
+All code is available on the OSF project page or on github (\url{https://github.com/janpfander/meta_interventions_news}).
 
 \FloatBarrier
 
@@ -835,16 +835,20 @@ Overall, our simulation suggests that (i) given conservative sample size assumpt
 \CSLLeftMargin{4. }%
 \CSLRightInline{Modirrousta-Galian, A. \& Higham, P. A. Gamified inoculation interventions do not improve discrimination between true and fake news: Reanalyzing existing research with receiver operating characteristic analysis. \emph{Journal of Experimental Psychology: General} (2023).}
 
-\bibitem[\citeproctext]{ref-pfanderSpottingFalseNews2024}
+\bibitem[\citeproctext]{ref-bataillerSignalDetectionApproach2019}
 \CSLLeftMargin{5. }%
+\CSLRightInline{Batailler, C., Brannon, S. M., Teas, P. \& Gawronski, B. \href{https://osf.io/uc9me/}{A Signal Detection Approach to Understanding the Identification of Fake News}. (2019).}
+
+\bibitem[\citeproctext]{ref-pfanderSpottingFalseNews2024}
+\CSLLeftMargin{6. }%
 \CSLRightInline{Pfänder, J. \& Altay, S. Spotting false news and doubting true news: A meta-analysis of news judgments. (2024) doi:\href{https://doi.org/10.31219/osf.io/n9h4y}{10.31219/osf.io/n9h4y}.}
 
 \bibitem[\citeproctext]{ref-harrer2021}
-\CSLLeftMargin{6. }%
+\CSLLeftMargin{7. }%
 \CSLRightInline{Harrer, M., Cuijpers, P., A, F. T. \& Ebert, D. D. \emph{Doing meta-analysis with r: A hands-on guide}. (Chapman \& Hall/CRC Press, 2021).}
 
 \bibitem[\citeproctext]{ref-bataillerSignalDetectionApproach2022}
-\CSLLeftMargin{7. }%
+\CSLLeftMargin{8. }%
 \CSLRightInline{Batailler, C., Brannon, S. M., Teas, P. E. \& Gawronski, B. \href{https://doi.org/10.1177/1745691620986135}{A Signal Detection Approach to Understanding the Identification of Fake News}. \emph{Perspectives on Psychological Science} \textbf{17}, 78--98 (2022).}
 
 \end{CSLReferences}
@@ -913,25 +917,13 @@ Term & Estimate & p-value & SDT Estiamte & SDT Term\\
 \midrule
 (Intercept) & -0.512 & 0.000 & 0.512 & Average c (pooled across all conditions)\\
 veracity\_numeric & 0.785 & 0.000 & 0.785 & Average d' (pooled across all conditions)\\
-condition\_numeric & -0.118 & 0.053 & 0.118 & Delta c (change in -response bias between control and treatment)\\
+condition\_numeric & -0.118 & 0.053 & 0.118 & Delta c (change in response bias between control and treatment)\\
 veracity\_numeric:condition\_numeric & -0.281 & 0.021 & -0.281 & Delta d' (change in sensitivity between control and treatment)\\
 \bottomrule
+\multicolumn{5}{l}{\textsuperscript{} The model coefficients have the interpretations in terms of SDT as presented here in this table because we use deviation coding for our}\\
+\multicolumn{5}{l}{veracity (fake = -0.5, true = 0.5) and condition (-0.5 = control, 0.5 = intervention) variables.}\\
 \end{tabular}}
 \end{table}
-
-Due to our coding for the two independent variables, the coefficients have the following interpretation:
-
-\begin{itemize}
-\tightlist
-\item
-  \texttt{(Intercept)} = average -\(c\), pooled across all conditions
-\item
-  \texttt{veracity\_numeric} = average \(d'\), pooled across all conditions
-\item
-  \texttt{condition\_numeric} = -\(\Delta c\), i.e.~the change in -response bias between control and treatment
-\item
-  \texttt{veracity\_numeric:condition\_numeric} = \(\Delta d'\), i.e.~the change in sensitivity between control and treatment
-\end{itemize}
 
 \subsubsection{c.~SDT in mixed models}\label{c.-sdt-in-mixed-models}
 
@@ -944,9 +936,7 @@ One simple way to account for this dependency is to compute participant-level ou
 
 
 \begin{figure}
-\centering
-\includegraphics{output/figures/individual-level-plot.pdf}
-\caption{\label{fig:individual-level-plot}Distribution of participant-level averages for Experiment 1 of the simulated data. The percentage labels (from left to right) represent the share of participants with a negative score, a score of exactly 0, and a positive score, for both measures respectively. Note that when calculating by-participant averages, we follow\textsuperscript{7} in applying log-linear rule correction. This is particularly relevant for cases when the hit rate or the false alarm rate take the values of 0 (case in which qnorm(0) = -Inf) or 1 (case in which qnorm(1) = Inf).}
+\includegraphics[width=8in]{individual_level_plot} \caption{Distribution of participant-level averages for Experiment 1 of the simulated data. The percentage labels (from left to right) represent the share of participants with a negative score, a score of exactly 0, and a positive score, for both measures respectively. Note that when calculating by-participant averages, we follow\textsuperscript{8} in applying log-linear rule correction. This is particularly relevant for cases when the hit rate or the false alarm rate take the values of 0 (case in which qnorm(0) = -Inf) or 1 (case in which qnorm(1) = Inf).}\label{fig:individual-level-plot}
 \end{figure}
 
 \begin{table}
