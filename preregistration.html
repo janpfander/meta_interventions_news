@@ -1909,11 +1909,11 @@ source(&quot;functions/plot_theme.R&quot;)
 source(&quot;functions/own_functions.R&quot;)</code></pre>
 <div id="introduction" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
-<p>In recent years, many studies have tested interventions designed to help people detect online misinformation. However, the results are often not directly comparable, because researchers have used different modes of evaluating the effectiveness of these interventions<span class="citation"><sup>1</sup></span>.</p>
+<p>In recent years, many studies have tested interventions designed to help people detect online misinformation. However, the results are often not directly comparable, because researchers have used different modes of evaluating the effectiveness of these interventions<span class="citation"><sup>1</sup></span>. Moreover, the most popular outcome measure–a discernment score based on Likert-scale mean differences between true and false news–has recently been shown to be biased<span class="citation"><sup>2</sup></span>.</p>
 <p>The aim of this study re-analyze these studies in a common framework to draw new conclusions about the effectiveness of individual-level interventions designed to reduce people’s susceptibility for believing in misinformation. Following a recent literature<span class="citation"><sup>2–5</sup></span> we will use a Signal Detection Theory (SDT) framework. This allows us to evaluate two different effects of interventions: First, the effect on sensitivity, which is the ability of discriminating between true and false news. Second, the effect on response bias, which is the extent to which participants shift their general response criterion, i.e. the extent to which they become generally more/less skeptical in their accuracy ratings for all news (regardless of whether true or false).</p>
 <p>We formulate two main research questions: How do interventions against misinformation affect: (i) people’s ability to discriminate between true and false news (sensitivity, or “d’”, in a SDT framework; RQ1)?, and (ii) people’s skepticism towards news in general (i.e. response bias, or “c”, in a SDT framework; RQ2)?</p>
 <p>We will also test some moderator effects. At this stage, we know that we will ask the following questions: Do the effects of the interventions (both on sensitivity and response bias) differ between (i) different types of interventions; (ii) politically concordant and politically discordant news; (iii) different age groups? It is likely that after data collection, we will have a better overview of variables and would want to ask more moderator questions. If that is the case, we will specify these moderators in a second pre-registration before analysis.</p>
-<p>We will do an <a href="https://training.cochrane.org/handbook/current/chapter-26">Individual Participant Data meta-analysis (IPD)</a>, using a two-stage approach: First, we extract individual participant data from relevant studies and run a Signal Detection Theory analysis separately for each experiment. Second, we run a meta-analysis on the outcomes.</p>
+<p>We will do an <a href="https://training.cochrane.org/handbook/current/chapter-26">Individual Participant Data meta-analysis (IPD)</a>, using a two-stage approach: First, we extract individual participant data from relevant studies and run a Signal Detection Theory analysis separately for each experiment. Second, we run a meta-analysis on the outcomes of the experiments.</p>
 </div>
 <div id="methods" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Methods</h1>
@@ -1923,11 +1923,11 @@ source(&quot;functions/own_functions.R&quot;)</code></pre>
 <h3><span class="header-section-number">2.1.1</span> Systematic Literature review</h3>
 <p>We will base ourselves on the systematic literature review of a recent meta-analysis on people’s accuracy judgments of true and false news<span class="citation"><sup>6</sup></span>. Of all the studies extracted from this review, we will reduce our sample to those that tested an intervention to augment news discernment.</p>
 <p>Since the field is rapidly growing, we will also try to add papers that have been published since the systematic review. We will code for all papers whether they were part of the original systematic review of<span class="citation"><sup>6</sup></span> or identified afterwards, so that the selection process is transparent. In a second pre-registration–after data collection but before analysis–we will publish a full list of studies, detailing whether they were part of the systematic review or added afterwards by us because we came across them.</p>
-<p>We have already stored individual level data for several studies used in<span class="citation"><sup>6</sup></span>. We have yet to collect data for the remaining studies. For the studies that we have already stored individual-level data, we have not yet cleaned it according to the requirements of the study proposed here. We have not performed any of the here suggested analysis on the collected data. We have simulated data to be clear on the data structure our analysis requires and to test how well our model performs in recovering parameters. All analyses presented in this pre-registration use this simulated data.</p>
+<p>We have already stored individual level data for several studies used in<span class="citation"><sup>6</sup></span>. We have yet to collect data for the remaining studies. For the studies for which we already have stored individual-level data, we have not yet cleaned it according to the requirements of the study proposed here. We have not performed any of the here suggested analysis on the collected data. We have simulated data to be clear on the data structure our analysis requires and to test how well our model performs in recovering parameters. All analyses presented in this pre-registration use this simulated data.</p>
 </div>
 <div id="selecting-interventions" class="section level3" number="2.1.2">
 <h3><span class="header-section-number">2.1.2</span> Selecting Interventions</h3>
-<p>Sometimes, within the same experiment, researchers test different interventions, by comparing it to a single control group. For a meta-analysis, this is a problem, <a href="https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/effects.html#unit-of-analysis">sometimes referred to as double-counting</a>. The correlations due to the same comparison group cannot be accounted for by a meta-analytic model<span class="citation"><sup>7</sup></span>. Following options recommended in the <a href="https://training.cochrane.org/handbook/current/chapter-23#section-23-3">cochrane manual</a> we use the following rule of thumb: If the interventions are conceptually similar enough, pool the interventions together. If they are too dissimilar, pick the most pertinent one.</p>
+<p>Sometimes, within the same experiment, researchers test different interventions, by comparing it to a single control group. For a meta-analysis, this is a problem, <a href="https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/effects.html#unit-of-analysis">sometimes referred to as double-counting</a>. Dependencies between effect sizes based on the same comparison group cannot be accounted for by a meta-analytic model<span class="citation"><sup>7</sup></span>. As a consequence, we will have to make a selection of for experiments that test several interventions at the same time: Following options recommended in the <a href="https://training.cochrane.org/handbook/current/chapter-23#section-23-3">cochrane manual</a> we use the following rule of thumb: If the interventions are conceptually similar enough, pool the interventions together. If they are too dissimilar, pick the most pertinent one.</p>
 <p>It is hard to predict in advance how relevant these decisions will be. However, we will make them on a purely theoretical basis: Once we have collected our data, we will make an overview of all interventions, and make a decision in case of multiple intervention arms within the same experiment. We will preregister these decisions as part of the second pre-registration. Only then will we run the analysis.</p>
 <p>We have tried to mimic the situation of multiple intervention groups but only one control group in our simulated data. Some experiments have several interventions, and they are sometimes conceptually similar, sometimes different. Table <a href="#tab:intervention-selection-a">2.1</a> shows the experimental structure of the first two simulated papers.</p>
 <pre class="r"><code>data %&gt;% 
@@ -2082,7 +2082,7 @@ warning labels
 </tbody>
 </table>
 <p>In Paper 1, there are two experiments (experiment_id = ‘1’ and experiment_id = ‘2’). Both experiments only have two arms, respectively: the control group and an intervention group (priming for Experiment 1; warning labels for Experiment 2). In these cases, since there is only one intervention, there is no decision to make as to which intervention to keep. By contrast, the first experiment of Paper 2 has three arms, among with two different intervention types (‘priming’ and ‘warning labels’). In such a case, we would need to make a decision on which intervention type to keep. This decision will probably depend on which intervention type occurred how many times etc.</p>
-<p>In our data, we will first detect all experiments with multiple interventions (Table <a href="#tab:intervention-selection-b">2.3</a>)</p>
+<p>In our data, we will first detect all experiments with multiple interventions (Table <a href="#tab:intervention-selection-b">2.3</a>).</p>
 <pre class="r"><code>conflict &lt;- data %&gt;% 
   distinct(paper_id, experiment_id, unique_experiment_id, intervention_id, intervention_type) %&gt;% 
   group_by(unique_experiment_id) %&gt;% 
@@ -2534,7 +2534,7 @@ d&#39; = \Phi^{-1}(HR) - \Phi^{-1}(FAR)
 c = -\frac{1}{2}(\text{zHR} + \text{zFAR})
 \]</span></p>
 <p>Note that <span class="math inline">\(c\)</span> = 0 when <span class="math inline">\(zFAR = -zHR\)</span>. Because <span class="math inline">\(-zHR = z(1-HR)\)</span> is the (z-transformed) share of misses (true news rated as “not accurate”), <span class="math inline">\(c\)</span> = 0 when the false alarm rate is equal to the rate of misses (Macmillan &amp; Creelman (2004). In other words, if people–mistakenly–rate true news as not accurate (the rate of misses) as much as they–mistakenly–rate false false news as accurate (the rate of false alarms), then there is no response bias. A positive <span class="math inline">\(c\)</span> score occurs when the miss rate (rating true news news as false) is larger than the false alarm rate (rating false news as true). In other words, a positive <span class="math inline">\(c\)</span> score indicates that people were more skeptical towards true news than they were gullible towards false news. We refer to this as an overall tendency towards skepticism.</p>
-<p>Our outcome of interest is the intervention effects on <span class="math inline">\(d&#39;\)</span> (“d prime”, sensitivity) and <span class="math inline">\(c\)</span> (response bias). Since these outcomes are about the difference between the control and the treatment group, we call them “Delta”. Specifically, they are defined as:</p>
+<p>Our outcomes of interest are the intervention effects on <span class="math inline">\(d&#39;\)</span> (“d prime”, sensitivity) and <span class="math inline">\(c\)</span> (response bias). Since these outcomes are about the difference between the control and the treatment group, we call them “Delta”. Specifically, they are defined as:</p>
 <p><span class="math display">\[
 \Delta d&#39; = d&#39;_{treatment} - d&#39;_{control}
 \]</span></p>
@@ -2554,7 +2554,7 @@ codebook &lt;- data.frame(
     &quot;veracity&quot;, &quot;condition&quot;, &quot;intervention_label&quot;, &quot;intervention_description&quot;, 
     &quot;intervention_selection&quot;,
     &quot;accuracy_raw&quot;, &quot;scale&quot;, &quot;originally_identified_treatment_effect&quot;, 
-    &quot;concordance&quot;, &quot;age&quot;, &quot;identified_via&quot;, &quot;id&quot;, 
+    &quot;concordance&quot;, &quot;age&quot;, &quot;age_range&quot;, &quot;identified_via&quot;, &quot;id&quot;, 
     &quot;unique_experiment_id&quot;, &quot;accuracy&quot;
   ),
   Description = c(
@@ -2572,7 +2572,8 @@ codebook &lt;- data.frame(
     &quot;The scale used in the original study&quot;,
     &quot;Whether the authors identified a significant treatment effect (`FALSE` if no, `TRUE` if yes)&quot;,
     &quot;Political concordance of news items (concordant or discordant)&quot;,
-    &quot;Participant age&quot;,
+    &quot;Participant age. In some cases, participant age will not be exact, but within a binned category. In this case, we will take the mid-point of this category for the age variable&quot;,
+    &quot;Binned age, if only this is provided by the study.&quot;,
     &quot;Indicates if a paper was identified by the systematic review or added after&quot;,
     &quot;Unique participant ID (merged `paper_id`, `experiment_id`, `subject_id`)&quot;,
     &quot;Unique experiment ID (merged `paper_id` and `experiment_id`)&quot;,
@@ -2723,7 +2724,15 @@ Political concordance of news items (concordant or discordant)
 age
 </td>
 <td style="text-align:left;width: 25em; ">
-Participant age
+Participant age. In some cases, participant age will not be exact, but within a binned category. In this case, we will take the mid-point of this category for the age variable
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+age_range
+</td>
+<td style="text-align:left;width: 25em; ">
+Binned age, if only this is provided by the study.
 </td>
 </tr>
 <tr>
@@ -2760,7 +2769,7 @@ Binary version of <code>accuracy_raw</code>; unchanged if originally binary
 </tr>
 </tbody>
 </table>
-<p>Building a comparable accuracy measure that we can analyze in the SDT framework outlined here, requires collapsing scales. The studies that we will look at use a variety of scales. Some use a binary scale, which is the one that is the most straightforward to use in a SDT framework (signal vs. no signal) and thus also the one we have simulated. However, a lot of studies use Likert-type scales. For these studies, we will collapse the original scores into a dichotomized version with answers of either ‘accurate’ (0) or ‘not accurate’ (1). For example, a study might have used a 4-point scale going from 1, not accurate at all, to 4, completely accurate. In this case, we will code responses of 1 and 2 as not accurate (0) and 3 and 4 as accurate (1). For scales, with a mid-point (example 3 on a 5-point scale), we will code midpoint answers as ‘NA’, meaning they will be excluded from the analysis.</p>
+<p>Building a comparable accuracy measure that we can analyze in the SDT framework outlined here, requires collapsing scales. The studies that we will look at use a variety of scales. Some use a binary scale, which is the one that is the most straightforward to use in a SDT framework (signal vs. no signal) and thus also the one we have simulated. However, a lot of studies use Likert-type scales. For these studies, we will collapse the original scores into a dichotomized version with answers of either ‘not accurate’ (0) or ‘accurate’ (1). For example, a study might have used a 4-point scale going from 1, not accurate at all, to 4, completely accurate. In this case, we will code responses of 1 and 2 as not accurate (0) and 3 and 4 as accurate (1). For scales, with a mid-point (example 3 on a 5-point scale), we will code midpoint answers as ‘NA’, meaning they will be excluded from the analysis.</p>
 </div>
 <div id="main-analysis" class="section level3" number="2.2.3">
 <h3><span class="header-section-number">2.2.3</span> Main Analysis</h3>
@@ -3266,8 +3275,8 @@ par(mfrow = c(1, 1))</code></pre>
 <p>We distinguish between two broad kinds of moderator variables: those that vary within-experiments (e.g. political concordance) and those that vary between experiments (e.g. intervention type). We will use different approaches for these two kinds.</p>
 <div id="a.-within-experiment-variables" class="section level4" number="2.2.4.1">
 <h4><span class="header-section-number">2.2.4.1</span> a. within-experiment variables</h4>
-<p>There are two moderator variables that vary within-experiments that we will test: age and political concordance. Age varies within experiments, but between participants (each participant can only have one age). Political concordance varies not only within experiments, and also within participants–in the typical experiment design, each participant is shown both concordant and discordant items. In the text, we will focus on political concordance, which requires slightly more complex modelling, but provide the models for age in the respective code chunks.</p>
-<p>We have two options: (i) integrating political concordance in our baseline model. While this would be the straightforward thing to do, it involves a three-way interaction with many random effects and will likely bring up convergence issues; (ii) run our baseline model separately for concordant and discordant items. Then, proceed just as for between-experiment moderators.</p>
+<p>There are two moderator variables that vary within-experiments that we will test: age and political concordance. Age varies within experiments, but between participants (each participant can only have one age). Political concordance varies not only within experiments, and also within participants–in the typical experiment design, each participant is shown both concordant and discordant items. In the follwing, we will focus on political concordance, which requires slightly more complex modelling, but provide the models for age in the respective code chunks<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
+<p>We have two options: The first is integrating political concordance in our baseline model. While this would be the straightforward thing to do, it involves a three-way interaction with many random effects and will likely bring up convergence issues. The second option is to run our baseline model separately for concordant and discordant items, and then proceed as for between-experiment moderators. We will try the first option first, and only revert to the second if we encounter serious convergence issues.</p>
 <div id="i.-integrating-concordance-in-baseline-model" class="section level5" number="2.2.4.1.1">
 <h5><span class="header-section-number">2.2.4.1.1</span> i. Integrating Concordance in baseline model</h5>
 <p>In the first option, we add political concordance to our Stage 1 model, such that we have a three-way interaction between veracity, condition and political concordance.</p>
@@ -3386,7 +3395,7 @@ time_minutes
 -0.445
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3412,7 +3421,7 @@ veracity_numeric
 0.933
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3438,7 +3447,7 @@ condition_numeric
 0.015
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3464,7 +3473,7 @@ concordance_numeric
 0.029
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3490,7 +3499,7 @@ veracity_numeric:condition_numeric
 -0.041
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3516,7 +3525,7 @@ veracity_numeric:concordance_numeric
 0.072
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3542,7 +3551,7 @@ condition_numeric:concordance_numeric
 0.236
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3568,7 +3577,7 @@ veracity_numeric:condition_numeric:concordance_numeric
 0.304
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3589,7 +3598,7 @@ sd__(Intercept)
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3610,7 +3619,7 @@ cor__(Intercept).veracity_numeric
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3631,7 +3640,7 @@ cor__(Intercept).veracity_numeric:concordance_numeric
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3652,7 +3661,7 @@ sd__veracity_numeric
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3673,7 +3682,7 @@ cor__veracity_numeric.veracity_numeric:concordance_numeric
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 <tr>
@@ -3694,13 +3703,12 @@ sd__veracity_numeric:concordance_numeric
 <td style="text-align:right;">
 </td>
 <td style="text-align:right;">
-0.09
+0.06
 </td>
 </tr>
 </tbody>
 </table>
 <p>Given that all our binary variables in the data are deviation-coded (-0.5 vs. 0.5) outputs are to be interpreted as follows:</p>
-<p>Due to our coding for the two independent variables, the coefficients have the following interpretation:</p>
 <ul>
 <li><code>(Intercept)</code> = average -<span class="math inline">\(c\)</span>, pooled across all conditions</li>
 <li><code>veracity_numeric</code> = average <span class="math inline">\(d&#39;\)</span>, pooled across all conditions</li>
@@ -4150,7 +4158,7 @@ discordant
 </tr>
 </tbody>
 </table>
-<p>Based on this data, we can calculate the average response bias (<code>(Intercept)</code>) and sensitivity (<code>veracity_numeric</code>), pooled across all conditions; our treatment effects <code>delta_dprime</code> (<code>veracity_numeric:condition_numeric</code> in the model output) and <code>delta_c</code> (<code>condition_numeric</code> in the model output) from before, i.e. ignoring/pooling across political concordance; the differences in response bias (<code>concordance_numeric</code> in the model output) and sensitivity (<code>veracity_numeric:concordance_numeric</code> in the model output) between concordant and discordant items, pooling across control and treatment groups; the moderator effect of convergence on our original treatment effects <code>delta_dprime</code> and <code>delta_c</code>, i.e. how much stronger/weaker the effects on response bias (<code>condition_numeric:concordance_numeric</code> in the model output) and sensitivity (<code>veracity_numeric:condition_numeric:concordance_numeric</code> in the model output) are for concordant items, compared to discordant ones. Table <a href="#tab:moderator-SDT-by-hand">2.20</a> shows the results of these by-hand calculations. Comparing the results from the by-hand calculation (Table <a href="#tab:moderator-SDT-by-hand">2.20</a>) and the glm (Table <a href="#tab:glm-example-experiment1">2.16</a>), we note that the results are the same.</p>
+<p>Based on this data, we can calculate the average response bias (<code>(Intercept)</code>) and sensitivity (<code>veracity_numeric</code>), pooled across all conditions; our treatment effects <code>delta_dprime</code> (<code>veracity_numeric:condition_numeric</code> in the model output) and <code>delta_c</code> (<code>condition_numeric</code> in the model output) from before, i.e. ignoring/pooling across political concordance; the differences in response bias (<code>concordance_numeric</code> in the model output) and sensitivity (<code>veracity_numeric:concordance_numeric</code> in the model output) between concordant and discordant items, pooling across control and treatment groups; the moderator effect of convergence, i.e. how much stronger/weaker the effects on response bias (<code>condition_numeric:concordance_numeric</code> in the model output) and sensitivity (<code>veracity_numeric:condition_numeric:concordance_numeric</code> in the model output) are for concordant items, compared to discordant ones. Table <a href="#tab:moderator-SDT-by-hand">2.20</a> shows the results of these by-hand calculations. Comparing the results from the by-hand calculation (Table <a href="#tab:moderator-SDT-by-hand">2.20</a>) and the glm (Table <a href="#tab:glm-example-experiment1">2.16</a>), we note that the results are the same.</p>
 <pre class="r"><code># average dprime and c
 SDT_pooled_averages &lt;- sdt_outcomes %&gt;% 
   summarize(across(c(dprime, c), ~mean(.x, na.rm = TRUE), .names = &quot;average_{.col}&quot;)) 
@@ -4858,7 +4866,7 @@ BIC
 <h2><span class="header-section-number">2.3</span> Sensitivity Analysis</h2>
 <pre class="r"><code>sensitivity_data &lt;- read_csv(&quot;data/simulations/sensitivity_analysis.csv&quot;)</code></pre>
 <p>Since we are running a meta-analysis based on a systematic review, we cannot control the final sample size. To have rough estimate on the statistical power we anticipate our study to have, we ran a sensitivity analysis based on a simulation. For the simulation, we–conservatively–assumed that the meta-analysis sample will consist of 10 papers. We assumed that each paper has between 1 and 4 experiments, and each experiment can have between two and four experimental arms (one of which is always the control condition). For each experimental arm, we assumed a sample size of 100 participants. The number of experiments per paper and arms per experiments was chosen randomly for each study. We further assumed that participants always saw 5 true and 5 false news. For details about other parameter assumptions, see the parameter list specified above. Although our final sample of papers will probably have properties quite different from what we assumed here, we believe these assumptions are rather conservative.</p>
-<p>In our simulations, we varied the values (small = 0.2, medium = 0.5, large = 0.8) for the true effect sizes for d’ and c in the data. For each combination of the two effect sizes, we run 100 iterations, i.e. 100 times we generate a different sample of 10 papers, and run our meta-analysis on that sample. The aim of the sensitivity analysis consists in checking how many of these 100 meta-analyses find a significant effect. The share of analyses that detect the true effect is the statistical power.</p>
+<p>In our simulations, we varied the values (small = 0.2, medium = 0.5, large = 0.8) for the true effect sizes for d’ and c in the data. For each combination of the two effect sizes, we ran 100 iterations, i.e. 100 times we generated a different sample of 10 papers, and ran our meta-analysis on that sample (900 different meta-analyses in total). The aim of the sensitivity analysis consists in checking for how many of these 100 meta-analyses per combination we find a significant effect. The share of analyses that detect the true effect is the statistical power.</p>
 <p>As shown in Figure <a href="#fig:sensitivity-dprime">2.3</a> for d’ and in Figure <a href="#fig:sensitivity-c">2.4</a> for c, even for very small effect sizes (0.2), we find statistical power greater than 90%, given our assumptions. For d’, the value of c does not appear to affect the statistical power. For c, a low d’ (0.2) appears to yield slightly lower statistical power than a medium (0.5) or large (0.8) d.</p>
 <pre class="r"><code># specify significance
 alpha &lt;- 0.05
@@ -4909,9 +4917,9 @@ Figure 2.4: Results of sensitivity analysis for Delta c. The plot shows the pow
 </div>
 <div id="parameter-recovery" class="section level2" number="2.4">
 <h2><span class="header-section-number">2.4</span> Parameter Recovery</h2>
-<p>Instead of only checking whether our models find a significant effect or not, we also descriptively check how well our model recovers the data generating parameters accros the different samples.</p>
-<p>As shown in Figure <a href="#fig:sensitivity-parameter-dprime">2.5</a> for d’ and Figure <a href="#fig:sensitivity-parameter-c">2.6</a> for c, we find that the distributions of meta-analytic estimates across the 100 samples per pair of effect sizes are centered around the true data generating parameter when the effect size is small (0.2). With an increasing true effect size, however, the estiamte distributions tend to be shifted to the left of the parameter, which suggests that our models consistently underestimate the true effect.</p>
-<p>Overall, our simulation suggests that (i) given conservative sample size assumptions, we will have large enough statistical power to detect even small effects, and (ii) that our model might slightly underestimates true effect sizes, which makes it a conservative estimator.</p>
+<p>Instead of only checking whether our models find a significant effect or not, we also descriptively check how well our model recovers the data generating parameters across the different samples.</p>
+<p>As shown in Figure <a href="#fig:sensitivity-parameter-dprime">2.5</a> for d’ and Figure <a href="#fig:sensitivity-parameter-c">2.6</a> for c, we find that the distributions of meta-analytic estimates across the 100 samples per pair of effect sizes are centered around the true data generating parameter when the effect size is small (0.2). With an increasing true effect size, however, the estiamte distributions tend to be shifted to the left of the parameter, which suggests that our models consistently underestimate the true effect for larger effect sizes.</p>
+<p>Overall, our simulation suggests that (i) given conservative sample size assumptions, we will have large enough statistical power to detect even small effects, and (ii) that our model might slightly underestimate larger true effect sizes, which makes it a conservative estimator.</p>
 
 <pre class="r"><code># custom function for grid labels
 custom_labeller &lt;- labeller(
@@ -4949,11 +4957,11 @@ Figure 2.6: Distributions of Delta c across simulated meta-analyses. The plot sh
 </div>
 <div id="data-availability" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Data availability</h1>
-<p>All data is available on the OSF project page or on github (<a href="https://github.com/janpfander/meta_interventions_news" class="uri">https://github.com/janpfander/meta_interventions_news</a>).</p>
+<p>All simulation data used in this pre-registration is available on the OSF project (<a href="https://osf.io/wtxq3/" class="uri">https://osf.io/wtxq3/</a>) page or on github (<a href="https://github.com/janpfander/meta_interventions_news" class="uri">https://github.com/janpfander/meta_interventions_news</a>).</p>
 </div>
 <div id="code-availability" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Code availability</h1>
-<p>All code is available on the OSF project page or on github (<a href="https://github.com/janpfander/meta_interventions_news" class="uri">https://github.com/janpfander/meta_interventions_news</a>).</p>
+<p>All code used to generate this pre-registration and to run the simulations is available on the OSF project (<a href="https://osf.io/wtxq3/" class="uri">https://osf.io/wtxq3/</a>) page or on github (<a href="https://github.com/janpfander/meta_interventions_news" class="uri">https://github.com/janpfander/meta_interventions_news</a>).</p>
 </div>
 <div id="references" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> References</h1>
@@ -5804,6 +5812,7 @@ Other
 <hr />
 <ol>
 <li id="fn1"><p>Level 1 being the the participant level, i.e. the sampling variation of the original studies, see<span class="citation"><sup>7</sup></span>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>visible only in the .html version<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 

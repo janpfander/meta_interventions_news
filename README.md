@@ -12,22 +12,22 @@ A Pre-data Collection Registration
 
 In recent years, many studies have proposed individual-level
 interventions to reduce people’s susceptibility for believing in
-misinformation. Researchers have typically evaluated the effectiveness
-of these interventions based on a discernment measure–how much more
-participants rate true news as accurate than false news. Here, we will
-re-assess the findings of this literature by analyzing their data using
-a Signal Detection Theory (SDT) framework. This allows us to
-differentiate between two different kinds of intervention effects:
-First, the effect on sensitivity, which is the ability of discriminating
-between true and false news that researchers typically look for. Second,
-the effect on response bias, which is the extent to which participants
-become generally more/less skeptical in their accuracy ratings for all
-news (whether true or false). We run an Individual Participant Data
-meta-analysis (IPD) based on a sample of studies that we identified via
-a systematic literature review following the PRISMA guidelines. We use a
-two-stage approach: First, we extract individual participant data and
-run a Signal Detection Theory analysis separately for each experiment.
-Second, we run a meta-analysis on the experiment-level outcomes.
+misinformation. However, the results are often not directly comparable,
+because researchers have used different modes of evaluating the
+effectiveness of these interventions. Here, we will re-assess the
+findings of this literature in a Signal Detection Theory (SDT)
+framework. This allows us to differentiate between two different kinds
+of intervention effects: First, the effect on sensitivity, which is the
+ability of discriminating between true and false news that researchers
+typically look for. Second, the effect on response bias, which is the
+extent to which participants become generally more/less skeptical in
+their accuracy ratings for all news (whether true or false). We will run
+an Individual Participant Data (IPD) meta-analysis based on a sample of
+studies that we identified via a systematic literature review following
+the PRISMA guidelines. We will use a two-stage approach: First, we
+extract individual participant data and run a Signal Detection Theory
+analysis separately for each experiment. Second, we will run a
+meta-analysis on the experiment-level outcomes.
 
 ------------------------------------------------------------------------
 
