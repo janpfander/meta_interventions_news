@@ -1,0 +1,802 @@
+---
+title: "Data Collection"
+output: 
+  bookdown::pdf_document2: default
+  bookdown::html_document2: 
+    keep_md: yes
+  bookdown::word_document2: default
+bibliography: references.bib
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+urlcolor: blue
+---
+
+```{r packages, include=FALSE}
+# load required packages
+library(tidyverse)   # data wrangling and visualisation
+library(kableExtra)  # for tables
+library(readxl)      # read excel files
+```
+
+# Coding instructions
+
+These coding instructions are written for Research Assistants.
+
+## What's this project about?
+
+In recent years, many studies have proposed individual-level interventions to reduce people’s susceptibility for believing in misinformation. However, the results are often not directly comparable, because researchers have used different modes of evaluating the effectiveness of these interventions. Here, we will re-assess the findings of this literature. To do so, we need to bring the raw, participant-level data from these studies into a comparable format. Table \@ref(tab:codebook) contains a list of variables we will collect. We might not be able to collect all variables for all studies. For political concordance, e.g., this will certainly not be the case. However, for each study, we aim to collect as many of these variables as possible.
+
+## Pick a paper
+
+-   Check [this google doc](https://docs.google.com/spreadsheets/d/1LCBKx2YxY9qqko61TDmANrVcGZqaljbEbKXLV64Wwg8/edit?gid=594394060#gid=594394060) with all studies to be added. If there is no name put in the `coder` column, that paper is free to choose for you to work on. Put your name down a paper of your choice. You will have the right to modify this document once you start working on the project.
+
+-   Only pick one paper. Once you've finished you can pick the next one.
+
+-   This list represents a pre-selection of studies: Not necessarily all of the papers (and not necessarily all of the studies within a single paper), on this list might test an intervention in the way we are looking for, with a proper treatment and control group. 
+
+- Many other issues can occur, such as you are unable to access the data for a certain paper. If things like this happen, make sure to describe your problem in the `comment` section and notify us, so that we can check up on it.
+
+-   Note that the list of studies in this document will be growing as we identify new studies.
+
+## Set up your project
+
+-   Once you've picked a paper, download the data. Use the `comment` section on the google spreadsheet to explain where you downloaded the data and which file you downloaded. 
+
+- Follow this file naming convention: `FirstAuthor_year.filetype` (e.g. `Badrinathan_2021.csv`). If a paper contains several data sets from different studies, name them `FirstAuthor_year-study_N.filetype` (e.g. `Bago_2022-study_4.csv`). Try to pick the study name that corresponds to the study/experiment number as reported in the respective article.
+
+- Once you've got the data, make a new [R project](https://r4ds.hadley.nz/workflow-scripts#projects), open an RMarkdown file (you can also use Quarto if you prefer, but you have to code in R language). Make a new folder called `data` and store the study data in there. 
+
+## Extract and clean the data
+
+- Follow the structure of the examples in this document (you can download the `data_collection.Rmd` that generated this pdf from [the project's github repository](https://github.com/janpfander/meta_interventions_news)). 
+
+- Here is a template with relevant sections:
+
+```
+\begin{verbatim} (ignore this line)
+
+# Paper Title (just copy-paste the title)
+
+## Intervention
+
+It is important that you describe the interventions (sometimes you can just copy-paste a concise description of the experimental design from the original papers), for each study/experiment of a paper. This description is key: make sure it is understandable from your description what exactly was tested. Include in this description the `intervention_label` values that you assign to each condition (see examples).
+
+## Intervention selection (leave empty)
+
+## Original treatment effect?
+
+State whether the original others identified a treatment effect on discernment (difference in accuracy ratings between true and false news) in their paper. If there wasn't such a test, explain here. You can have a look at the examples. 
+
+## Data extraction
+
+All steps of the data extraction (see examples)
+
+### Some step (optional)
+
+### Some other step (optional)
+
+## Final data
+
+Once you've got most variables identified, checked and cleaned, build the final data frame with all target variables. 
+
+\end{verbatim} (ignore this line)
+```
+
+- For you, sections and variables about **intervention selection** are **not relevant** (at least not for now). But so that you understand why we care about them: Sometimes, within the same experiment, researchers test different interventions, by comparing it to a single control group. For a meta-analysis, this is a problem, [sometimes referred to as double-counting](https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/effects.html#unit-of-analysis). Dependencies between effect sizes based on the same comparison group cannot be accounted for by a meta-analytic model [@harrer2021]. As a consequence, we will have to make a selection of for experiments that test several interventions at the same time: Following options recommended in the [cochrane manual](https://training.cochrane.org/handbook/current/chapter-23#section-23-3) we use the following rule of thumb: If the interventions are conceptually similar enough, pool the interventions together. If they are too dissimilar, pick the most pertinent one. During data extraction, we will make decisions about which conditions to include and exclude. We will write these decisions down in the text, and code them in the variable intervention selection. When building the final cleaned version for each experiment, we will only keep the those conditions that we decided for.
+
+-   For the papers you work on, please still create the variables `intervention_selection` and `intervention_selection_description`, but just fill them with empty strings (e.g. `mutate(intervention_selection = "")`)
+
+-   How to find the right variables in the data of a paper? That's the tricky part. If you're lucky, there is a codebook somewhere in the online materials, or variables are self-explanatory (e.g. a variable named `condition` is likely about the experimental condition). Nevertheless, you should always do plausibility checks (e.g. do the values correspond to conditions that are described in the paper, or can you replicate descriptive tables from the paper with the variables you rely on etc.)
+
+-   In general it is important that your cleaning code is well readable. Clean the data step by step, work with code chunks and describe before each code chunk what you are doing. Also, comment your code and use the `tidyverse` for more readable code. If you rely on ChatGPT or the like, you can easily prompt it to use `tidyverse`-style code.
+
+-   If you follow the examples and the variable structure, you should end up with a "tidy data" frame. In case you are not familiar with this term (and operations like `pivot_longer` and `pivot_wider`), [you can read up on it here](https://r4ds.had.co.nz/tidy-data.html).
+
+-   Always check on your manipulations. Leave the check code in the same code-chunk and comment it out once you're done (select the code and press Command + Shift + C on Mac).
+
+## Submit your work
+
+-   For each paper, upload the entire R project folder to [this google drive](https://drive.google.com/drive/folders/18vDnqnjKlU2PlWrOWJgEBzuY8FesKSGl?usp=sharing). You will have access to this folder once you start working on the project. Name the folder just as you name the data file `FirstAuthor_year` (e.g. `Badrinathan_2021`)
+
+```{r codebook, echo = FALSE}
+# Create the codebook data frame
+codebook <- data.frame(
+  Variable_Name = c(
+    "paper_id", "experiment_id", "subject_id", "country", "year", 
+    "veracity", "condition", "intervention_label", "intervention_description", 
+    "intervention_selection",
+    "intervention_selection_description",
+    "control_selection",
+    "accuracy_raw", "scale", "originally_identified_treatment_effect", 
+    "concordance", "age", "age_range", "identified_via", "id", 
+    "unique_experiment_id", "accuracy"
+  ),
+  Description = c(
+    "Identifier for each paper",
+    "Identifier for each experiment within a paper; start counting from 1; even if a paper has only one experiment, assign it an identifier",
+    "Identifier of individual participants within an experiment",
+    "The country of the sample",
+    "Ideally year of data collection, otherwise year of publication",
+    "Identifying false and true news items",
+    "Treatment vs. control",
+    "A label for what the intervention consisted of",
+    "A detailed description of the intervention",
+    "Only use if there is a choice to be made about how to treat different interventions: Pick the intervention_label that corresponds the the condition to keep, or a vector of intervention labels in cases there should be a merge", 
+    "If multiple interventions tested within a single experiment (and related to a single control group), reasoning as to which intervention to select",
+    "Only use if there is a choice to be made about how to treat different control conditions: Sometimes when there are multiple interventions, there are also multiple control groups; indicate the control group (or groups, in case of a merge) to keep",
+    "Participants' accuracy ratings on the scale used in the original study",
+    "The scale used in the original study",
+    "Whether the authors identified a significant treatment effect (`FALSE` if no, `TRUE` if yes)",
+    "Political concordance of news items (concordant or discordant)",
+    "Participant age. In some cases, participant age will not be exact, but within a binned category. In this case, we will take the mid-point of this category for the age variable",
+    "Binned age, if only this is provided by the study.",
+    "Indicates if a paper was identified by the systematic review or added after",
+    "Unique participant ID (merged `paper_id`, `experiment_id`, `subject_id`)",
+    "Unique experiment ID (merged `paper_id` and `experiment_id`)",
+    "Binary version of `accuracy_raw`; unchanged if originally binary"
+  )
+)
+
+# Generate the styled table with kableExtra
+kable(codebook, 
+      caption = "Codebook for variables to collect",
+      col.names = c("Variable Name", "Description"),
+      booktabs = TRUE,
+      longtable = TRUE) %>%
+  kable_styling(latex_options = "repeat_header",
+                font_size = 10) %>% 
+  column_spec(1, bold = TRUE) %>%  # Bold the first column
+  column_spec(2, width = "25em") %>%  # Set width for the description column
+  row_spec(0, bold = TRUE)  # Bold the header row
+```
+
+# @bagoEmotionMayPredict2022
+
+## Intervention
+
+Only studies 2, 3 and 4 tested an intervention. The intervention aimed at emotion regulation. In study 2, participants were asked to apply either emotional suppression (`intervention_label` = `emotion_suppression`) or emotion reappraisal techniques (`intervention_label` = `emotion_reappraisal`) when considering the veracity of several headlines. In the emotion reappraisal condition, participants read: "As you view and read the headlines, please try to adopt a detached and unemotional attitude. Please try to think about what you are reading objectively. Read all of the headlines carefully, but please try to think about what you are seeing in such a way that you feel less emotion." In the emotion suppression condition, they read: "As you view and read the headlines, if you have any feelings, please try your best not to let those feelings show. Read all of the headlines carefully, but try to behave so that someone watching you would not know that you are feeling anything at all." In studies 3 and 4 of the paper, the authors only tested the emotion suppression treatment.
+
+## Intervention selection
+
+Since we can only include one treatment per control condition in the meta-analysis, we remove participants in the emotion reappraisal condition in study 2. This allows us to compare across their studies.
+
+## Original treatment effect?
+
+The authors did not find evidence that emotion regulation helped people distinguish false from true news headlines, in any of the studies.
+
+## Data extraction
+
+### Study 2
+
+```{r}
+d2 <- read_csv("data/data_from_papers/Bago_2022-study_2.csv")
+head(d2)
+
+# check levels of condition 
+levels(as.factor(d2$condition))
+
+# check levels of accuracy 
+table(d2$perceived_accu, useNA = "always")
+
+# check levels of concordance 
+table(d2$concordancy, useNA = "always")
+
+# check levels of age
+table(d2$age, useNA = "always") # 98 is likely code for NA
+
+
+d2 <- d2 %>% 
+  mutate(subject_id = ID, 
+         veracity = ifelse(reality == "fake", "fake", "true"),
+         intervention_label = tolower(condition),
+         condition = ifelse(condition == "Control", "control", "intervention"), 
+         accuracy_raw = perceived_accu,
+         concordance = tolower(concordancy),
+         experiment_id = 2,
+         age = ifelse(age == 98, NA, age),
+         originally_identified_treatment_effect = FALSE,
+         intervention_selection = "emotion_suppression",
+         intervention_selection_description = "In studies 3 and 4 of the paper, the authors only tested the emotion suppression treatment. Since we can only include one treatment per control condition in the meta-analysis, we remove participants in the emotion reappraisal condition in study 2. This allows us to compare across their studies.")
+```
+
+### Study 3
+
+```{r}
+d3 <- read_csv("data/data_from_papers/Bago_2022-study_3.csv")
+names(d3)
+
+# check levels of condition variable
+levels(as.factor(d3$condition))
+
+# check levels of age
+table(d3$Age, useNA = "always") # 90 seems old, but NA's are coded explictly as such
+
+d3 <- d3 %>% 
+  mutate(subject_id = ID, 
+         veracity = ifelse(reality == "fake", "fake", "true"),
+         intervention_label = tolower(condition),
+         condition = ifelse(condition == "Control", "control", "treatment"), 
+         accuracy_raw = perceived_accu,
+         concordance = tolower(concordancy),
+         experiment_id = 3,
+         age = Age,
+         originally_identified_treatment_effect = FALSE) 
+```
+
+### Study 4
+
+```{r}
+d4 <- read_csv("data/data_from_papers/Bago_2022-study_4.csv")
+head(d4)
+
+# check levels of condition variable
+levels(as.factor(d4$condition))
+
+# check levels of age
+table(d4$Age, useNA = "always") # again, 90 and 98 seem old, but NA's are coded explictly as such
+
+d4 <- d4 %>% 
+  mutate(subject_id = ID, 
+         veracity = ifelse(reality == "fake", "fake", "true"),
+         intervention_label = tolower(condition),
+         condition = ifelse(condition == "Control", "control", "treatment"), 
+         accuracy_raw = perceived_accu,
+         concordance = tolower(concordancy),
+         experiment_id = 4,
+         age = Age,
+         originally_identified_treatment_effect = FALSE) 
+```
+
+## Final data
+
+Finally, we combine all studies.
+
+```{r}
+## Combine + add remaining variables
+Bago_2022 <- bind_rows(d2, d3, d4) %>% 
+  mutate(scale = "binary", 
+         country = "United States",
+         paper_id = "Bago_2022", 
+         # make slightly more precise intervention label
+         # make sure that the control condition has no intervention label
+         intervention_label = ifelse(condition == "control",
+                                     NA,
+                                     paste0("emotion ", intervention_label)),
+         intervention_description = "Participants read the following instructions: 'As you view and read the headlines, if you have any feelings, please try your best not to let those feelings show. Read all of the headlines carefully, but try to behave so that someone watching you would not know that you are feeling anything at all.'",
+         ) %>% 
+  select(c(paper_id, experiment_id, subject_id, country, veracity, condition, intervention_label, intervention_description, intervention_selection, accuracy_raw, scale, originally_identified_treatment_effect, concordance, age))
+
+
+# Bago_2022 %>% 
+#   group_by(paper_id, experiment_id, subject_id) %>% 
+#   summarize(n_observations = n()) %>% 
+#   group_by(n_observations) %>% 
+#   summarize(n_paricipants = n_distinct(subject_id))
+```
+
+# @badrinathanEducativeInterventionsCombat2021
+
+## Intervention
+
+The study tested the effect of a literacy intervention with two slightly different variants. At first, all participants in the treatment group received the following : "Pedagogical intervention: Next, respondents went through a learning module to help inoculate against misinformation. This included an hour-long discussion on encouraging people to verify information along with concrete tools to do so." The difference between the two treatment groups was in some of the materials they were presented with: "Both treatment groups received the pedagogical intervention. However, one group received corrections to four pro-BJP false stories and the other received corrections to four anti-BJP false stories. Besides differences in the stories that were fact-checked, the tips on the flyer remained the same for both treatment groups.
+
+The author pooled the conditions in their study as well as in the data we have at hand. We therefor assign a single label (`intervention_label` = "in-person literacy") for the treatment. This label is broad enough.
+
+From an e-mail exchange with the author, we know that true news were selected from "mainstream as well as fact checking sites" and that news were presented in format of "headline + image in some cases".j
+
+## Intervention selection
+
+The author pooled both treatment groups together, after not having found differences in the treatment effect between the two. We follow the author, mostly because both treatment conditions seem sufficiently similar.
+
+## Original treatment effect?
+
+No: 'Receiving this hour-long media literacy intervention did not significantly increase respondents’ ability to identify misinformation on average.'
+
+Note, however, that the author measured detection of misinformation, not discernment. The outcome was only based on the misinformation items.
+
+## Data extraction
+
+We had followed the author's instructions given in the replication files: "To replicate, first run coding.R which merges the two data sets, cleans and recodes variables as needed for final analysis." Here, we use the cleaned data version, as produced by the author's "coding.R" file.
+
+```{r}
+# read data
+d <- read_csv("data/data_from_papers/Badrinathan_2021.csv")
+```
+
+### Build veracity variable and re-shape
+
+From the cleaning document of the author, we can deduce which variables correspond to false and which to true news items.
+
+The false news items were:
+
+dv1: CCTV : 'cctv' dv2: no terror attacks : 'attacks' dv3 : pulwama fake photos : 'pulwama' dv4 : ganga fake photos : 'ganga' dv5 : fake plastic finger : 'plastic' dv6 : soldier : 'soldier' dv7 : gomutra : 'gomutra' dv8 : rally : 'rally' dv9 : child kidnap : 'kidnap_dv' dv10 : 2000 note : 'note' dv11 : patel statue : 'patel' dv12 : flag on statue of liberty : 'flag' dv13 : evm hacking : 'evm'
+
+The true news items were:
+
+dv14: man ki baat: 'true1' dv15: pulwama : 'true1'
+
+Note that variables are coded `1` for correct responses (i.e. 1 corresponds to 'not accurate' for false news, and to 'accurate' for true news).
+
+The data set does not distinguish between the two slightly different treatment groups, as the author pooled them for her analysis.
+
+```{r}
+# bring data to long format and recode variables
+long_d <- d %>% 
+  pivot_longer(c(attacks, pulwama, ganga, plastic, soldier, gomutra, rally, 
+                 kidnap_dv, note, patel, flag, evm, true1, true2), 
+               names_to = "item",
+               values_to = "ratings") %>% 
+  # make an binary 'veracity' variable identifying true and fake
+  mutate(veracity = ifelse(grepl('true', item), 'true', 'fake'), 
+         # make treatment a factor
+         condition = recode_factor(treatment, `0` = "control", `1` = "treatment"), 
+         # recode accuracy responses for fake news
+         # so that 1 = rated as accurate (just as is measured for true news)
+         accuracy = ifelse(veracity == 'fake', 
+                                  ifelse(ratings == 1, 0, 1), 
+                                  ratings)
+         )
+
+# check
+# long_d %>% 
+#   group_by(item, veracity, treatment, condition) %>% 
+#   summarize(n = n(), 
+#             mean_rating = mean(ratings, na.rm=TRUE),
+#             mean_accuracy= mean(accuracy, na.rm=TRUE))
+```
+
+### Add political concordance
+
+While political concordance is not explicitly coded, we can build it from participants' political leaning and the political slant of the news items.
+
+From the cleaning document, we know that participants' party id (i.e. pro or contra the governing party) is coded by the variable 'BJP'. The problem is: we don't know what level (0,1) corresponds to which id. By replicating figure 5 (with the replication file accessible online) from the paper, we figured out that 0 = non BJP and 1 = BJP.
+
+We also know which fake news items are pro-BJP (gomutra, attacks, pulwama, soldier, flag, note) and which fake news items are anti_BJP (cctv, evm, ganga, kidnap_dv, plastic, patel). Regarding true news, combining the cleaning document and the supplement (table D.1), we know that `true1` (man ki baat) = pro BJP; and `true2` (pulwama) = anti BJP.
+
+```{r}
+pro_BJP <- c("gomutra", "attacks", "pulwama", "soldier", "flag", "note", "true1")
+
+long_d <- long_d %>% 
+  # make a binary variable indicating political slant of news
+  mutate(political_slant = ifelse(item %in% pro_BJP, "pro_BJP", "anti_BJP"),
+         # make a clearer party id variable
+         party_id = recode_factor(BJP, `0` = "non_BJP", `1` = "BJP"),
+         # combine party id and political slant 
+         concordance = case_when(political_slant == "pro_BJP" & party_id == "BJP" ~ "concordant",
+                                 political_slant == "anti_BJP" & party_id == "non_BJP" ~ "concordant", 
+                                 TRUE ~ "discordant")
+  )
+
+# check 
+# long_d %>% select(political_slant, party_id, concordance)
+```
+
+### Add and re-code variables
+
+```{r}
+# check id 
+nrow(d) # n participants (one row per participant)
+n_distinct(long_d$Serial.No.) # likely the correct variable
+
+long_d %>% 
+  group_by(Serial.No) %>% 
+  count() # second check, 14 observations
+
+# check age 
+table(long_d$age, useNA = "always")
+```
+
+## Final data
+
+```{r}
+# make final data
+Badrinathan_2021 <- long_d %>% 
+  mutate(
+    subject_id = Serial.No., 
+    veracity = veracity,
+    condition = condition, 
+    accuracy_raw = accuracy,
+    concordance = concordance,
+    experiment_id = 1,
+    age = age,
+    scale = "binary", 
+    country = "India",
+    paper_id = "Badrinathan_2021", 
+    intervention_label = "in-person literacy",
+    intervention_description = "'Pedagogical intervention: Next, respondents went through a learning module to help inoculate against misinformation. This included an hour-long discussion on encouraging people to verify information along with concrete tools to do so.'",
+    intervention_selection_description = "The author pooled both treatment groups together, after not having found differences in the treatment effect between the two. We follow the author, mostly because both treatment conditions seem sufficiently similar. ",
+    originally_identified_treatment_effect = NA) %>% # the author measured detection of misinformation, not discernment 
+  select(c(paper_id, experiment_id, subject_id, country, veracity, condition, intervention_label, intervention_description, intervention_selection_description, accuracy_raw, scale, originally_identified_treatment_effect, concordance, age))
+```
+
+# @claytonRealSolutionsFake2020
+
+## Intervention
+
+The study tested the effect of a literacy intervention. For an overview of the labels we've assigned, see the `intervention_label` column in Table \@ref(tab:clayton-conditions):
+
+"The experiment used a 2× 3 between-subjects design that also includes a pure control group. Participants were randomly assigned with equal probability to a pure control group or to one of six experimental conditions (see Table  1). We manipulated whether participants were exposed to a general warning about misleading articles or not (middle column of Table  1). We also independently randomized noncontrols into one of three headline conditions: a condition in which no fact-checking tags were presented (first two rows of Table  1), a specific warning condition that included tags labeling articles as “Disputed” (second two rows of Table  1), and a specific warning condition in which they were instead labeled as “Rated false” (last two rows of Table 1)."
+
+```{r clayton-conditions, echo=FALSE}
+# Create the data frame
+data <- data.frame(
+  Tag = c("None", "None", "“Disputed”", "“Disputed”", "“Rated false”", "“Rated false”", "Pure control"),
+  General_warning = c("No", "Yes", "No", "Yes", "No", "Yes", NA),
+  N = c(469, 424, 413, 429, 429, 397, 433), 
+  intervention_label = c("NA", "NA", "labels_disputed_no_warning", "labels_disputed_warning", "labels_false_no_warning", "labels_false_warning", "NA")
+)
+
+# Generate the table
+kable(data, col.names = c("Tag", "General warning", "N", "intervention_label"), 
+      caption = "Table: Participant Counts by Tag and General Warning") # or format = "latex" for PDF
+```
+
+"In the pure control group, respondents were exposed to no images, no articles, no general warning, no tags, and no headlines, and proceeded directly to the questions measuring the outcome variable (discussed in the next section)."
+
+"In the general warning condition, participants were shown a message warning them about misleading articles and providing advice for identifying false information (see Online Appendix A for exact wording and design)."
+
+## Intervention selection
+
+From all the conditions shown in Table \@ref(tab:clayton-conditions), we believe the warning tag intervention to be more interesting than the general warning intervention. To avoid confounding between the two manipulations, we therefor use only those conditions where there was no general warning (intervention_label =. We also discard the pure control group in which participants didn't read any news items. There are two types of warning tag interventions: One that labels false articles as 'disputed' and another that labels them as 'rated false'. We will merge these two conditions as they seem sufficiently similar to be part of a warning tag category.
+
+## Original treatment effect?
+
+The authors find an effect for reduced belief in misinformation: "The negative effect of tags on perceived accuracy was stronger, however. Average perceived accuracy for participants who saw a headline with a “Disputed” tag was 0.24 points lower on our four-point scale than for participants who saw no tag (p \< 0.01; Cohen’s d = 0.26) and 0.34 points lower for those who saw a “Rated false” tag than for those who saw no tag (p \< 0.01; Cohen’s d = 0.38), supporting H2a and H2b. Most notably, “Rated false” tags were significantly more effective than “Disputed” tags at reducing belief in false information relative to a no tag condition (- 0.11, p \< 0.01)"
+
+The authors find that regarding their general warnings intervention (the one we decided not to include), "the decrease in perceived accuracy from the general warning was greater with true stories (- 0.12) than false ones (- 0.08), though an exploratory analysis pooling evaluations of true and false headlines shows we cannot reject the null hypothesis of no difference in perceived accuracy between them".
+
+The authors did not test discernment regarding the warning tag intervention.
+
+## Data extraction
+
+```{r}
+# import data 
+load("data/data_from_papers/Clayton_2020.RData")
+
+# by default, the data frame is called "table" 
+# rename
+
+data <- table
+```
+
+We first need to indentiy the different experimental conditions. This is a bit tricky because the documentation is bad.
+
+```{r}
+# cross-reading paper and stata code, these seem to be the relevant variables for condition
+data %>% 
+  select(cond, nocorr_condition, disputed_condition, false_condition, 
+                   flag_cond, purecontrol, warning, nowarning)
+
+# cross-check sample sizes with what is reported in the paper to be sure these are the conditions
+data %>% 
+  group_by(cond, nocorr_condition, disputed_condition, false_condition, 
+                   flag_cond, purecontrol, warning, nowarning) %>% 
+  summarize(n_per_condition = n()) 
+```
+
+Based on this information, we build a condition variable with more meaningful value labels.
+
+```{r}
+# make new easy-to-read condition variable
+data <- data %>% 
+  mutate(condition = case_when(cond == 1 ~ "pure_control", 
+                               cond == 2 ~ "control_no_warning", 
+                               cond == 3 ~ "control_warning", 
+                               cond == 4 ~ "disputed_no_warning",
+                               cond == 5 ~ "disputed_warning", 
+                               cond == 6 ~ "false_no_warning", 
+                               cond == 7 ~ "false_warning")
+  )
+
+# check for correct sample size
+data %>% group_by(condition) %>% summarise(n = n())
+```
+
+As a next step, we need to identify which variables code instances of news ratings
+
+```{r}
+# trying to identify news ratings  
+data %>% select(belief_old_fake_news, belief_real_news, real_civil_war_belief,
+                 real_syria_belief, real_gorsuch_belief, draft_belief, bee_belief, 
+                 chaf_belief, protester_belief, marines_belief, fbiagent_belief) 
+```
+
+It seems that all true news are preceded by 'real'. Next, we bring the data into long format to build a veracity variable.
+
+```{r}
+# bring data to long format
+long_data <- data %>% 
+  # make an id variable
+  mutate(id = 1:nrow(.)) %>% 
+  pivot_longer(c(real_civil_war_belief, real_syria_belief, real_gorsuch_belief, 
+                 draft_belief, bee_belief, chaf_belief, protester_belief, 
+                 marines_belief, fbiagent_belief), 
+               names_to = "item",
+               values_to = "ratings") %>% 
+  # make an binary 'veracity' variable identifying true and fake
+  mutate(veracity = ifelse(grepl('real', item), 'true', 'fake'))
+
+# check that veracity corresponds to correct items
+# long_data %>% 
+#   group_by(item, veracity) %>% 
+#   summarize(n = n())
+```
+
+Age is only provided in bins. We make a cleaner version of the variable.
+
+```{r}
+# Extract labels from the variable's attributes
+labels <- attr(long_data$agegroup, "labels")
+
+# Use the numeric values as levels and their names as labels
+long_data <- long_data %>%
+  mutate(age_range = factor(agegroup, 
+                      levels = labels, 
+                      labels = names(labels)))
+```
+
+Based on this bin variable, we take the age category mid-point as a proxy for age.
+
+```{r}
+# Define midpoints for each age group
+age_midpoints <- c(
+  "Under 18" = 17,             
+  "18 - 24" = (18 + 24) / 2,
+  "25 - 34" = (25 + 34) / 2,
+  "35 - 44" = (35 + 44) / 2,
+  "45 - 54" = (45 + 54) / 2,
+  "55 - 64" = (55 + 64) / 2,
+  "65 - 74" = (65 + 74) / 2,
+  "75 - 84" = (75 + 84) / 2,
+  "85 or older" = 85          
+)
+
+# Map numeric codes to labels, then to midpoints
+age_midpoints <- setNames(as.numeric(age_midpoints), names(labels))
+
+# Replace agegroup with midpoints
+long_data <- long_data %>%
+  mutate(age = ifelse(!is.na(age_range), age_midpoints[age_range], NA))
+
+# check
+# long_data %>% 
+#   select(age, age_range)
+```
+
+## Final data
+
+```{r}
+# make final data
+Clayton_2020 <- long_data %>% 
+  mutate(
+    subject_id = id,
+    veracity = veracity,
+    # make sure that the control conditions has no intervention label
+    intervention_label = ifelse(str_detect(condition, "control"),
+                                NA,
+                                paste0("labels_", condition)), 
+    # keep different labels for control conditions, code treatment as "treatment"
+    condition = ifelse(str_detect(condition, "control"), condition, "treatment"),
+    accuracy_raw = ratings,
+    experiment_id = 1,
+    age = age,
+    scale = 4, 
+    country = "United States",
+    paper_id = "Clayton_2020", 
+    intervention_description = "The experiment used a 2× 3 between-subjects design that also includes a pure control group. Participants were randomly assigned with equal probability to a pure control group or to one of six experimental conditions. First, participants were exposed to a general warning about misleading articles or not. Second, treatment groups were randomized into one of three headline conditions: a condition in which no fact-checking tags were presented, a specific warning condition that included tags labeling articles as “Disputed”, and a specific warning condition in which they were instead labeled as “Rated false”.",
+    intervention_selection = "",
+    intervention_selection_description = "We believe the warning tag intervention to be more interesting than the general warning intervention. We therefor use only the ones where there is no general warning. We also discard the pure control group in which participants didn't read any news items. There are two types of warning tag interventions: One that labels false articles as 'disputed' and another that labels them as 'rated false'. We will merge these two conditions as they seem sufficiently similar to be part of a warning tag category.",
+    control_selection = "", 
+    originally_identified_treatment_effect = NA) %>% # the author measured detection of misinformation, not discernment 
+  select(c(paper_id, experiment_id, subject_id, country, veracity, condition, intervention_label, intervention_description, intervention_selection, intervention_selection_description, control_selection, accuracy_raw, scale, originally_identified_treatment_effect, age, age_range))
+
+
+# check conditions
+# Clayton_2020 |> 
+#   group_by(condition) |> 
+#   reframe(unique(intervention_label))
+```
+
+# @altayPeopleAreSkeptical2024
+
+## Intervention
+
+"In Study 1, participants were randomly assigned to one of the five following conditions: (i) the Control Condition in which no headline was labeled, (ii) the correct label condition in which all AI-generated headlines were labeled (`intervention_label` = "label_Correct"), (iii) the missing label condition in which only half of AI-generated headlines were labeled (`intervention_label` = "label_Missing"), (iv) the noisy label condition in which half of AI-generated headlines were labeled and half of human-generated headlines were mislabeled (`intervention_label` = "label_Noise "), and (v) the false label condition in which false headlines were labeled as false (`intervention_label` = "label_FalseLabel")"
+
+"In Study 2 [...] we introduced three new conditions in which participants were provided with definitions explaining what it meant for a headline to be AI-generated. In the Weak Condition, participants were told that AI was used to improve the clarity of the text and adapt its style. In the Medium Condition, participants were told that AI contributed more substantially by writing a first draft of the article, while in the Strong Condition AI chose the topic of the article and wrote the whole article.
+
+However, in Study 2, all treatment conditions are only about AI labels. These seem not directly relevant to our study. We will therefore exclude Study 2.
+
+## Intervention selection
+
+The paper's main goal is to test how AI labels affect accuracy judgments. However, this is not the main interest of our study. We will therefor reduce the treatment to the condition in Study 1 where false headlines are labeled as false (`intervention_label` = "label_FalseLabel").
+
+## Original treatment effect?
+
+Regarding our condition of interest--false labels--the authors find that: "We found that the false labels reduced accuracy and sharing ratings by 0.56 points [-0.70, -0.42]. The false labels had a similar effect on the perceived accuracy of the headlines (b = 0.58 [-0.75, -0.41]) and sharing intentions (b = 0.52 [-0.73, -0.30])."
+
+Note that this effect is on all accuracy ratings (false and true news), and not on discernment.
+
+## Data extraction
+
+### Study 1
+
+```{r}
+d <- read_excel("data/data_from_papers/Altay_2023-study_1.xlsx")
+```
+
+Inspect data
+
+```{r}
+# inspect key variables to get an overview
+d %>% 
+  select(PROLIFIC_PID, True_False, AI_Human, Condition, Conditions, DV, Ratings, News_number) %>% 
+  arrange(PROLIFIC_PID)
+```
+
+#### Check conditions
+
+Get an overview of conditions. There are two candidate variables (`Condition` and `Conditions`).
+
+```{r}
+table(d$Condition, useNA = "always")
+
+table(d$Conditions, useNA = "always")
+```
+
+The `Conditions` variable is slightly more detailed, with two noise conditons. However, since in the paper the authors only report 5 conditions corresponding to the `Condition` variable, we will rely on that one.
+
+#### Accuracy
+
+Check the dependent variable.
+
+```{r}
+table(d$DV, useNA= "always")
+```
+
+The data is in long format data, such tat `Ratings` codes the outcome score for both sharing and accuracy. We reduce the data to only accuracy ratings.
+
+```{r}
+# long format data, `Ratings` codes the outcome for both sharing and accuracy, 
+# so we have to filter DV == Accuracy. 
+# Also, remove some treatment conditions that are irrelevant for our study
+d <- d %>% 
+  filter(DV == "Accuracy")
+```
+
+## Final data
+
+```{r}
+# make final data
+Altay_2023 <- d %>% 
+  mutate(
+    subject_id = PROLIFIC_PID,
+    veracity = ifelse(True_False == "false", "false", "true"),
+    # make sure that the control conditions has no intervention label
+    intervention_label = ifelse(str_detect(Condition, "Control"),
+                                NA,
+                                paste0("label_", Condition)), 
+    # keep different labels for control conditions, code treatment as "treatment"
+    condition = ifelse(Condition == "Control", "control", "treatment"),
+    accuracy_raw = Ratings,
+    experiment_id = 1,
+    age = Age,
+    scale = 6, 
+    country = "United States",
+    paper_id = "Altay_2023", 
+    intervention_description = "In Study 1, participants were randomly assigned to one of the five following conditions: (i) the Control Condition in which no headline was labeled, (ii) the correct label condition in which all AI-generated headlines were labeled, (iii) the missing label condition in which only half of AI-generated headlines were labeled, (iv) the noisy label condition in which half of AI-generated headlines were labeled and half of human-generated headlines were mislabeled, and (v) the false label condition in which false headlines were labeled as false",
+    intervention_selection = "label_FalseLabel",
+    intervention_selection_description = "The paper's main goal is to test how AI labels affect accuracy judgments. However, this is not the main interest of our study. We will therefor reduce the treatment to the condition in Study 1 where false headlines are labeled as false (intervention_label = label_FalseLabel).",
+    originally_identified_treatment_effect = NA) %>% # the authors did not measure discernment 
+  select(c(paper_id, experiment_id, subject_id, country, veracity, condition, intervention_label, intervention_description, intervention_selection, intervention_selection_description, accuracy_raw, scale, originally_identified_treatment_effect, age))
+
+
+# check conditions
+# Altay_2023 |>
+#   group_by(condition) |>
+#   reframe(unique(intervention_label))
+```
+
+# @altayPeopleAreSkeptical2024
+
+## Intervention
+
+"In Study 1, participants were randomly assigned to one of the five following conditions: (i) the Control Condition in which no headline was labeled, (ii) the correct label condition in which all AI-generated headlines were labeled (`intervention_label` = "label_Correct"), (iii) the missing label condition in which only half of AI-generated headlines were labeled (`intervention_label` = "label_Missing"), (iv) the noisy label condition in which half of AI-generated headlines were labeled and half of human-generated headlines were mislabeled (`intervention_label` = "label_Noise "), and (v) the false label condition in which false headlines were labeled as false (`intervention_label` = "label_FalseLabel")"
+
+"In Study 2 [...] we introduced three new conditions in which participants were provided with definitions explaining what it meant for a headline to be AI-generated. In the Weak Condition, participants were told that AI was used to improve the clarity of the text and adapt its style. In the Medium Condition, participants were told that AI contributed more substantially by writing a first draft of the article, while in the Strong Condition AI chose the topic of the article and wrote the whole article.
+
+However, in Study 2, all treatment conditions are only about AI labels. These seem not directly relevant to our study. We will therefore exclude Study 2.
+
+## Intervention selection
+
+The paper's main goal is to test how AI labels affect accuracy judgments. However, this is not the main interest of our study. We will therefor reduce the treatment to the condition in Study 1 where false headlines are labeled as false (`intervention_label` = "label_FalseLabel").
+
+## Original treatment effect?
+
+Regarding our condition of interest--false labels--the authors find that: "We found that the false labels reduced accuracy and sharing ratings by 0.56 points [-0.70, -0.42]. The false labels had a similar effect on the perceived accuracy of the headlines (b = 0.58 [-0.75, -0.41]) and sharing intentions (b = 0.52 [-0.73, -0.30])."
+
+Note that this effect is on all accuracy ratings (false and true news), and not on discernment.
+
+## Data extraction
+
+### Study 1
+
+```{r}
+d <- read_excel("data/data_from_papers/Altay_2023-study_1.xlsx")
+```
+
+Inspect data
+
+```{r}
+# inspect key variables to get an overview
+d %>% 
+  select(PROLIFIC_PID, True_False, AI_Human, Condition, Conditions, DV, Ratings, News_number) %>% 
+  arrange(PROLIFIC_PID)
+```
+
+#### Check conditions
+
+Get an overview of conditions. There are two candidate variables (`Condition` and `Conditions`).
+
+```{r}
+table(d$Condition, useNA = "always")
+
+table(d$Conditions, useNA = "always")
+```
+
+The `Conditions` variable is slightly more detailed, with two noise conditons. However, since in the paper the authors only report 5 conditions corresponding to the `Condition` variable, we will rely on that one.
+
+#### Accuracy
+
+Check the dependent variable.
+
+```{r}
+table(d$DV, useNA= "always")
+```
+
+The data is in long format data, such tat `Ratings` codes the outcome score for both sharing and accuracy. We reduce the data to only accuracy ratings.
+
+```{r}
+# long format data, `Ratings` codes the outcome for both sharing and accuracy, 
+# so we have to filter DV == Accuracy. 
+# Also, remove some treatment conditions that are irrelevant for our study
+d <- d %>% 
+  filter(DV == "Accuracy")
+```
+
+## Final data
+
+```{r}
+# make final data
+Altay_2023 <- d %>% 
+  mutate(
+    subject_id = PROLIFIC_PID,
+    veracity = ifelse(True_False == "false", "false", "true"),
+    # make sure that the control conditions has no intervention label
+    intervention_label = ifelse(str_detect(Condition, "Control"),
+                                NA,
+                                paste0("label_", Condition)), 
+    # keep different labels for control conditions, code treatment as "treatment"
+    condition = ifelse(Condition == "Control", "control", "treatment"),
+    accuracy_raw = Ratings,
+    experiment_id = 1,
+    age = Age,
+    scale = 6, 
+    country = "United States",
+    paper_id = "Altay_2023", 
+    intervention_description = "In Study 1, participants were randomly assigned to one of the five following conditions: (i) the Control Condition in which no headline was labeled, (ii) the correct label condition in which all AI-generated headlines were labeled, (iii) the missing label condition in which only half of AI-generated headlines were labeled, (iv) the noisy label condition in which half of AI-generated headlines were labeled and half of human-generated headlines were mislabeled, and (v) the false label condition in which false headlines were labeled as false",
+    intervention_selection = "label_FalseLabel",
+    intervention_selection_description = "The paper's main goal is to test how AI labels affect accuracy judgments. However, this is not the main interest of our study. We will therefor reduce the treatment to the condition in Study 1 where false headlines are labeled as false (intervention_label = label_FalseLabel).",
+    originally_identified_treatment_effect = NA) %>% # the authors did not measure discernment 
+  select(c(paper_id, experiment_id, subject_id, country, veracity, condition, intervention_label, intervention_description, intervention_selection, intervention_selection_description, accuracy_raw, scale, originally_identified_treatment_effect, age))
+
+
+# check conditions
+# Altay_2023 |>
+#   group_by(condition) |>
+#   reframe(unique(intervention_label))
+```
+
+
+# References
